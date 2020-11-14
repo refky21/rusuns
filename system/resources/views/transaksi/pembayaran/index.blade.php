@@ -99,6 +99,7 @@
                       <th scope="col">Keterangan</th>
                       <th scope="col">Tanggal Transaksi</th>
                       <th scope="col">Nominal</th>
+                      <th scope="col">Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -114,6 +115,9 @@
                         <td>{{$d->Keterangan}}</td>
                         <td>{{date('d F Y', strtotime($d->Tgl_Bayar))}}</td>
                         <td class="text-right">{{number_format($d->Total_Nominal,0,',','.')}}</td>
+                        <td class="text-right">
+                        <a href="{{url('pembayaran/cetak/'.$d->Pembayaran_Id)}}" target="_blank" class="btn btn-xs btn-square btn-outline-info waves-effect waves-light m-1">Cetak</a>
+                        </td>
                     </tr>
 
 

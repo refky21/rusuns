@@ -65,12 +65,7 @@
         <div class="clearfix"></div>
         
         <!-- Header Content -->
-        <div class="header-content">
-            <div class="container">
-                
-                <h1>Sistem Informasi Rusunawa <span id="js-rotating">Kota, Magelang</span></h1>
-            </div> <!-- end of container -->
-        </div> <!-- end of header-content -->
+        <!-- end of header-content -->
         <!-- end of header content -->
 
         <!-- Social Links -->

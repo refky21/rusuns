@@ -66,6 +66,9 @@
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#tabe-4"><i class="icon-notebook icons"></i> <span class="hidden-xs">Transaksi</span></a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tabe-5"><i class="icon-notebook icons"></i> <span class="hidden-xs">Laporan</span></a>
+                        </li>
                     </ul>
                 <div class="tab-content">
                   <div id="tabe-1" class="container tab-pane active show">
@@ -182,6 +185,13 @@
                                 <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','UnitSewa-Edit')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','UnitSewa-Edit')->first()->access_id)->first() != null){echo "checked";} ?>></td>
                                 <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','UnitSewa-Delete')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','UnitSewa-Delete')->first()->access_id)->first() != null){echo "checked";} ?>></td>
                             </tr>
+                            <tr>
+                                <td>Dispensasi Pembayaran</td>
+                                <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','Dispensasi-View')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','Dispensasi-View')->first()->access_id)->first() != null){echo "checked";} ?>></td>
+                                <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','Dispensasi-Add')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','Dispensasi-Add')->first()->access_id)->first() != null){echo "checked";} ?>></td>
+                                <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','Dispensasi-Edit')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','Dispensasi-Edit')->first()->access_id)->first() != null){echo "checked";} ?>></td>
+                                <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','Dispensasi-Delete')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','Dispensasi-Delete')->first()->access_id)->first() != null){echo "checked";} ?>></td>
+                            </tr>
                            
                         </tbody>
                     </table>
@@ -245,6 +255,57 @@
                     </table>
                   </div>
 
+                  <div id="tabe-5" class="container tab-pane fade">
+                  <table class="table table-hover table-striped">
+                            <thead>
+                            <tr>
+                                    <th style="width:250px; text-align:center;">Menu</th>
+                                    <th style="width:75px; text-align:center;">Lihat</th>
+                                    <th style="width:75px; text-align:center;">Tambah</th>
+                                    <th style="width:75px; text-align:center;">Edit</th>
+                                    <th style="width:75px; text-align:center;">Hapus</th>
+                                </tr>
+                            <thead>
+                            <tbody>
+                            <tr>
+                                <td>Laporan Harian</td>
+                                <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','LaporanHarian-View')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','LaporanHarian-View')->first()->access_id)->first() != null){echo "checked";} ?>></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                            </tr>
+                            <tr>
+                                <td>Laporan Bulanan</td>
+                                <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','LaporanBulanan-View')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','LaporanBulanan-View')->first()->access_id)->first() != null){echo "checked";} ?>></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                            </tr>
+                            <tr>
+                                <td>Laporan Tahunan</td>
+                                <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','LaporanTahunan-View')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','LaporanTahunan-View')->first()->access_id)->first() != null){echo "checked";} ?>></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                            </tr>
+                            <tr>
+                                <td>Resume Penyewa</td>
+                                <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','ResumePenyewa-View')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','ResumePenyewa-View')->first()->access_id)->first() != null){echo "checked";} ?>></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                            </tr>
+                            <tr>
+                                <td>Daftar Penyewa</td>
+                                <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','DaftarPenyewa-View')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','DaftarPenyewa-View')->first()->access_id)->first() != null){echo "checked";} ?>></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                  </div>
 
 
 

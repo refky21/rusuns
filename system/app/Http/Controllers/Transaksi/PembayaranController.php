@@ -106,6 +106,7 @@ class PembayaranController extends Controller
                 ->join('penyewa','check_in.Penyewa_Id','=','penyewa.Penyewa_Id')
                 ->select('pembayaran.Check_In_Id','pembayaran.Keterangan','unit_sewa.Nama_Unit','mstr_rusun.nama_rusun','penyewa.Nama','pembayaran.Tgl_Bayar','pembayaran_detail.Pembayaran_Id')
                 ->groupby('pembayaran_detail.Pembayaran_Id')
+                ->groupby('pembayaran.Check_In_Id')
                 ->where([['Bulan',$Bulan_Id],['Tahun',$Tahun_Id]])->get();
             }else{
                 $ambil = [];
@@ -120,6 +121,7 @@ class PembayaranController extends Controller
                 ->join('penyewa','check_in.Penyewa_Id','=','penyewa.Penyewa_Id')
                 ->select('pembayaran.Check_In_Id','pembayaran.Keterangan','unit_sewa.Nama_Unit','mstr_rusun.nama_rusun','penyewa.Nama','pembayaran.Tgl_Bayar','pembayaran_detail.Pembayaran_Id')
                 ->groupby('pembayaran_detail.Pembayaran_Id')
+                ->groupby('pembayaran.Check_In_Id','pembayaran.Keterangan','unit_sewa.Nama_Unit','mstr_rusun.nama_rusun','penyewa.Nama','pembayaran.Tgl_Bayar','pembayaran_detail.Pembayaran_Id')
                 ->where([['Bulan',$Bulan_Id],['Tahun',$Tahun_Id],['info_id',$Rusun_Id]])
                 ->get();
             }else{
@@ -137,6 +139,7 @@ class PembayaranController extends Controller
 
         foreach($ambil as $d){
             $data[$i] = new \stdCLass;
+            $data[$i]->Pembayaran_Id = $d->Pembayaran_Id;
             $data[$i]->Check_In_Id = $d->Check_In_Id;
             $data[$i]->Keterangan = $d->Keterangan;
             $data[$i]->Nama_Unit = $d->Nama_Unit;
@@ -232,11 +235,11 @@ class PembayaranController extends Controller
             ->join('tagihan','tagihan_detail.Tagihan_Id','=','tagihan.Tagihan_Id')
             ->where([['Check_In_Id', $Check_In_Id],['tagihan_detail.Tahun',$Tahun_Id],['tagihan_detail.Bulan',$Bulan_Id]])
             ->select(['tagihan_detail.Tagihan_Id','Keterangan'])
-            ->groupby('tagihan.Tagihan_Id')
+            ->groupby('Tagihan_Id','Keterangan')
             ->WhereNotIn('Item_Pembayaran_Id', $used_tagihan)->get();
         }
 
-        // dd($cek_tagihan);
+        // dd($tagihan);
        
 
 
@@ -245,6 +248,7 @@ class PembayaranController extends Controller
         $penyewa = DB::table('check_in')
         ->join('penyewa','check_in.Penyewa_Id','=','penyewa.Penyewa_Id')
         ->where('Check_Out',null)
+        ->where('Rusun_Id',$Rusun_Id)
         ->get();
 
 
@@ -357,9 +361,21 @@ class PembayaranController extends Controller
                         'Jumlah' => $req->Total_Denda,
                     ];
                     DB::table('pembayaran_detail')->insert($data3);
+
+                    // Cash Flow 
+
+                   
                 
             }
+            $ambil_item = DB::table('item_pembayaran')->where('Item_Pembayaran_Id', $req->Item_Pembayaran[$i])->first();
 
+            $data4 = [
+                'Tgl_Trans' => date('Y-m-d H:i:s'),
+                'Item_Pembayaran_Id' =>$req->Item_Pembayaran[$i],
+                'Jml_Masuk' => $req->Jumlah[$i],
+                'Keterangan' => 'Penerimaan '.$ambil_item->Nama_Item
+            ];
+        DB::table('cash_flow')->insert($data4);
             
 
           }
@@ -391,5 +407,80 @@ class PembayaranController extends Controller
         // }
         Alert::success('Berhasil Menambah Data Pembayaran', 'Berhasil !');
         return  Redirect::to('pembayaran?Bulan_Id='.$req->Bulan.'&Tahun_Id='.$req->Tahun);
+    }
+
+
+    public function cetak(Request $request, $id)
+    {
+
+        // Ambil Mstr Rusun
+        $Rusun_Id = Input::get('Rusun_Id');
+        if($Rusun_Id != null){
+            $session =  $request->session()->put('Rusun_Id', $Rusun_Id);
+        }elseif($Rusun_Id == null && $request->session()->get('Rusun_Id') !=null){
+            $Rusun_Id = $request->session()->get('Rusun_Id');
+        }
+
+        $Bulan_Id = Input::get('Bulan_Id');
+
+        $Tahun_Id = Input::get('Tahun_Id');
+
+       
+        if($Bulan_Id != null){
+            $session =  $request->session()->put('Bulan_Id', $Bulan_Id);
+        }elseif($Bulan_Id == null && $request->session()->get('Bulan_Id') !=null){
+            $Bulan_Id = $request->session()->get('Bulan_Id');
+        }
+        if($Tahun_Id != null){
+            $session =  $request->session()->put('Tahun_Id', $Tahun_Id);
+        }elseif($Tahun_Id == null && $request->session()->get('Tahun_Id') !=null){
+            $Tahun_Id = $request->session()->get('Tahun_Id');
+        }
+        
+        $rusun = DB::table('mstr_rusun')->where('info_id', $Rusun_Id)->first();
+
+        // Pembayaran
+
+        $datas = DB::table('pembayaran')->where('Pembayaran_Id',$id)
+        ->join('check_in','pembayaran.Check_In_Id','=','check_in.Check_In_Id')
+        ->join('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
+        ->join('penyewa','check_in.Penyewa_Id','=','penyewa.Penyewa_Id')
+        ->join('tagihan','pembayaran.Tagihan_Id','=','tagihan.Tagihan_Id')
+        ->get();
+
+        
+
+        $data = [];
+        $i = 0;
+
+        foreach($datas as $d){
+            $data[$i] = new \stdClass();
+
+            $data[$i]->Nama = $d->Nama;
+            $data[$i]->Nama_Unit = $d->Nama_Unit;
+            $data[$i]->Pembayaran_Id = $d->Pembayaran_Id;
+            $data[$i]->Check_In_Id = $d->Check_In_Id;
+            $data[$i]->Tagihan_Id = $d->Tagihan_Id;
+            $data[$i]->Tgl_Bayar = $d->Tgl_Bayar;
+            $data[$i]->Keterangan = $d->Keterangan;
+            $data[$i]->Kode_Unit = $d->Kode_Unit;
+
+            // detail pembayaran 
+            $detail = DB::table('pembayaran_detail')->where('Pembayaran_Id',$d->Pembayaran_Id)
+            ->join('item_pembayaran','pembayaran_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
+            ->where([['Tahun', $Tahun_Id],['Bulan', $Bulan_Id]])
+            ->get();
+            $data[$i]->Detail_Pembayaran = $detail;
+            $i++;
+        }
+
+        // dd($data);
+
+        
+
+        return view('transaksi.pembayaran.cetak', compact(
+            'rusun'
+        ))
+        ->with('data', $data[0]);
     }
 }

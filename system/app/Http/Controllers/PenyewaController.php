@@ -93,30 +93,52 @@ class PenyewaController extends Controller
 
 
  //membuat no id penyewa
- $spmu = DB::table('penyewa')->orderBy('No_Reg','desc')->first(); // ambil kode paling besar
-// Format Penyewa : ID-191027-001
+// cek Rusun nya dulu
+
+    if($Rusun_Id != null){
+        $spmu = DB::table('penyewa')->where('Rusun_Id', $Rusun_Id)->orderBy('No_Reg','desc')->first();
+    }else{
+        $spmu = [];
+    }
+
+  // ambil kode paling besar
+
+//  dd($spmu) ;
+// Format Penyewa : PTB-200009
 //  dd($spmu);
  if($spmu != null){ // cek jika sudah ada spmu apa belum
    $exploded_spmu = explode("-",$spmu->No_Reg); // memisahkan kode spmu berdasarkan tanda "/"
-   $num = $exploded_spmu[1] + 1; // mengambil angka pada kode spmu dan menjumlahkan
+
+   $data_akhir = substr($exploded_spmu[1],2,4);
+   $num = $data_akhir + 1; // mengambil angka pada kode spmu dan menjumlahkan
    $length = strlen($num); // menghitung panjang karakter dari angka pada kode spmu
+   $kode_rusun = DB::table('mstr_rusun')->where('info_id', $Rusun_Id)->first()->kode_rusun;
+   $get_tahun = date('y');
+
+//    dd($length);
    if ($length == 1) {
     //  $Spmu_Num = "000".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
-     $Spmu_Num = date('ymd')."-000".$num;
+     $Spmu_Num = $kode_rusun."-".$get_tahun."000".$num;
    }else if ($length == 2) {
     //  $Spmu_Num = "00".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
-    $Spmu_Num = date('ymd')."-00".$num;
+    $Spmu_Num = $kode_rusun."-".$get_tahun."00".$num;
    }else if ($length == 3) {
     //  $Spmu_Num = "0".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
-    $Spmu_Num = date('ymd')."-0".$num;
+    $Spmu_Num = $kode_rusun."-".$get_tahun."0".$num;
    }else if ($length == 4) {
     //  $Spmu_Num = $num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
-    $Spmu_Num = date('ymd')."-".$num;
-   }
- }else{ // jika belum langsung ditulis 0001 untuk angka pada kode spmu
-   $Spmu_Num = date('ymd')."-0001"; // menulis kode spmu
- }
+    $Spmu_Num = $kode_rusun."-".$get_tahun."".$num;
+   }else{ // jika belum langsung ditulis 0001 untuk angka pada kode spmu
+        $Spmu_Num = $kode_rusun."-".$get_tahun."0001"; // menulis kode spmu
+    }
 
+}else{
+    $kode_rusun = DB::table('mstr_rusun')->where('info_id', $Rusun_Id)->first()->kode_rusun;
+    $get_tahun = date('y');
+    $Spmu_Num = $kode_rusun."-".$get_tahun."0001"; // menulis kode spmu
+}
+
+//  dd($Spmu_Num);
  //akhir membuat id penyewa
 
 
@@ -169,11 +191,11 @@ foreach($query as $q){
     // Ambil Master Rusunnya Dulu
     if($Rusun_Id != null){
             
-        $rusuns = DB::table('mstr_rusun')->orderby('info_id','asc')->where('info_id', $Rusun_Id)->get();
+        $rusuns = DB::table('mstr_rusun')->orderby('info_id','asc')->where('info_id', $Rusun_Id)->first();
 
         
     }else{
-        $rusuns = DB::table('mstr_rusun')->orderby('info_id','asc')->get();
+        $rusuns = [];
     }
 
 // dd($data);
@@ -185,6 +207,7 @@ foreach($query as $q){
         ->with('no_reg', $Spmu_Num)
         ->with('hubungan', $hubungan)
         ->with('rusuns', $rusuns)
+        ->with('Rusun_Id', $Rusun_Id)
         ->with('all_access',$access);
     }
 

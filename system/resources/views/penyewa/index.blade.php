@@ -182,16 +182,7 @@
                                 <input type="hidden" name="id" value="{{$d->Penyewa_Id}}">
                                 @csrf
                                 <div class="form-group row">
-                                    <label for="Rusun_Id" class="col-sm-2 col-form-label">Nama Rusunawa</label>
-                                    <div class="col-sm-10">
-                                    <select class="form-control single-select @error('Rusun_Id') is-invalid @enderror"  name="Rusun_Id" >
-                                        <option value="">-- Pilih --</option>
-                                            @foreach($rusuns as $rus)
-                                                <option <?php if($d->Rusun_Id == $rus->info_id){ echo 'selected';}?>  value="{{$rus->info_id}}">{{$rus->nama_rusun}}</option>
-
-                                            @endforeach
-                                    </select>
-                                    </div>
+                                    <label for="Rusun_Id" class="col-sm-2 col-form-label">Nama Rusunawa : {{$rusuns->nama_rusun}}</label> 
                                 </div>
                                 <div class="form-group row">
                                     <label for="No_Reg" class="col-sm-2 col-form-label">No Register</label>
@@ -477,25 +468,14 @@
         </div>
         <div class="modal-body">
             <form action=<?= url('penyewa/create'); ?>   method="post" enctype="multipart/form-data">
+            <input type="hidden" class="form-control" value="{{ $no_reg }}" id="No_Reg" name="No_Reg" readonly>
+            <input type="hidden" class="form-control" value="{{ $Rusun_Id }}"  name="Rusun_Id" readonly>
             @csrf
             <div class="form-group row">
                 <label for="Rusun_Id" class="col-sm-2 col-form-label">Nama Rusunawa</label>
-                <div class="col-sm-10">
-                <select class="form-control single-select @error('Rusun_Id') is-invalid @enderror"  name="Rusun_Id" >
-                    <option value="">-- Pilih --</option>
-                        @foreach($rusuns as $rus)
-                            <option  value="{{$rus->info_id}}">{{$rus->nama_rusun}}</option>
-
-                        @endforeach
-                </select>
-                </div>
+                <div class="col-sm-10" style="margin-top:9px;"> {{$rusuns->nama_rusun}}</div>
             </div>
-            <div class="form-group row">
-                <label for="No_Reg" class="col-sm-2 col-form-label">No Register</label>
-                <div class="col-sm-10">
-                <input type="text" class="form-control" value="{{ $no_reg }}" id="No_Reg" name="No_Reg" readonly>
-                </div>
-            </div>
+           
             <div class="form-group row">
                 <label for="Nama" class="col-sm-2 col-form-label">Nama Penyewa</label>
                 <div class="col-sm-10">

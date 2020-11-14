@@ -116,7 +116,19 @@
                 <span><strong>Perhatian!</strong> Untuk Mengaktifkan Menu Lainnya Silahkan Pilih Rusunawa.</span>
               </div>
       </div>
-    <?php } ?>
+    <?php }else{
+      ?>
+  <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+          <div class="alert-icon">
+        <i class="icon-exclamation"></i>
+          </div>
+          <div class="alert-message">
+            <span><strong>Perhatian!</strong> Untuk Menghindari Error Silahkan Pilih Rusun Terlebih Dahulu.</span>
+          </div>
+  </div>
+      <?php
+    } ?>
       <!--Start Dashboard Content-->
        <!-- Conten -->
       @yield('content')

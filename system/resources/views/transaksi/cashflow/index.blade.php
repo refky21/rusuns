@@ -39,34 +39,12 @@
                     Data Cash Flow
                 </div>
                 <div class="col-md-6 text-right">
-                
+                <button type="button" data-toggle="modal" data-target="#addModal" class="btn btn-sm btn-square btn-outline-success waves-effect waves-light m-1">Tambah Data</button>
                 </div>
             </div>
             
             </div>
             <div class="card-body">
-            <form action="" method="get">
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text" for="inputGroupSelect01">Sort</label>
-                            </div>
-                            <select class="custom-select" name="sort" onchange="this.form.submit()">
-                                
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-group mb-3">
-                            
-                        </div>
-                    </div>
-                </div>
-            </form>
                 @if (count($errors) > 0)
                 @foreach ($errors->all() as $error)
                         <div class="alert alert-danger alert-dismissible" role="alert">
@@ -91,11 +69,25 @@
                                     <th scope="col" class="text-center">Jumlah Masuk</th>
                                     <th scope="col" class="text-center">Jumlah Keluar</th>
                                     <th scope="col" class="text-center">Saldo</th>
-                                    <th class="text-center" scope="col"><i class="fa fa-cogs"></i></th>
                                 </tr>
                             </thead>
                             <tbody>
-                            
+                            @php
+                            $no = 1;
+                            $saldo = 0;
+                            $saldo2 = 0;
+                            @endphp
+                            @foreach($data as $d)
+                            <tr>
+                                    <td scope="col" >{{$no++}}</td>
+                                    <td scope="col" >{{date('d F Y', strtotime($d->Tgl_Trans))}}</td>
+                                    <td scope="col" >{{$d->Nama_Item}}</td>
+                                    <td scope="col" class="text-right">{{number_format($d->Total_Amount,0,',','.')}}</td>
+                                    <td scope="col" class="text-right">{{number_format($d->Uang_Keluar,0,',','.')}}</td>
+                                    
+                                    <td scope="col" class="text-right">{{number_format($d->Saldo,0,',','.')}}</td>
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
 
@@ -105,7 +97,71 @@
 
 
 
-
+            <div class="modal fade" id="addModal">
+    <div class="modal-dialog">
+    <div class="modal-content border-secondary">
+        <div class="modal-header bg-secondary">
+        <h5 class="modal-title text-white">  Tambah Data</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <form action=<?= url('cashflow/create'); ?> method="post">
+            @csrf
+            <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Jenis Pengeluaran</span>
+            </div>
+            <select class="custom-select" name="jenis">
+            <option value="">Pilih Jenis</option>
+            @foreach($items as $i)
+            <option value="{{$i->Item_Pembayaran_Id}}">{{$i->Nama_Item}}</option>
+            @endforeach
+           
+            </select>
+            </div>
+            @error('nama_tahun')
+                <p style="color:red;font-size:9px;margin-left:100px;">{{ $message }}</p>
+            @enderror
+            <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Tanggal</span>
+            </div>
+            <input type="date" id="tgl_trans" class="form-control  @error('tgl_trans') is-invalid @enderror" name="tgl_trans" value="{{ old('tgl_trans') }}">
+            </div>
+            @error('tgl_trans')
+                <p style="color:red;font-size:9px;margin-left:100px;">{{ $message }}</p>
+            @enderror
+            <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Jumlah Keluar</span>
+            </div>
+            <input type="number" id="jml_kel" class="form-control  @error('jml_kel') is-invalid @enderror" name="jml_kel" value="{{ old('jml_kel') }}">
+            </div>
+            @error('jml_kel')
+                <p style="color:red;font-size:9px;margin-left:100px;">{{ $message }}</p>
+            @enderror
+            <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Keterangan</span>
+            </div>
+            <input type="text" id="keterangan" class="form-control  @error('keterangan') is-invalid @enderror" name="keterangan" value="{{ old('keterangan') }}">
+            </div>
+            @error('keterangan')
+                <p style="color:red;font-size:9px;margin-left:100px;">{{ $message }}</p>
+            @enderror
+                           
+        
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-inverse-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+        <button type="submit" class="btn btn-secondary"><i class="fa fa-check-square-o"></i> Save changes</button>
+        </div>
+        </form>
+    </div>
+    </div>
+</div>
 
 
 @endsection

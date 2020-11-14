@@ -61,7 +61,80 @@ class CashFlowController extends Controller
             $rusun = DB::table('mstr_rusun')->get();
         }
 
-        return view('transaksi.cashflow.index', compact('Rusun_Id','rusun'))->with('all_access',$access);
+
+        $bulan_sekarang = date('m');
+        $th = date('Y');
+
+
+        // $all_pembayaran = DB::table('pembayaran_detail')->where([['Tahun', $th]])
+        // ->select(['pembayaran_detail.Item_Pembayaran_Id',DB::raw('SUM(Jumlah) as Total_Amount'),'Nama_Item'])
+        // ->join('item_pembayaran','pembayaran_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
+        // ->groupby(['pembayaran_detail.Item_Pembayaran_Id','Nama_Item'])
+        // ->get();
+
+
+        $all_pembayaran = DB::table('cash_flow')
+        ->join('item_pembayaran','cash_flow.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')->orderby('Cash_Flow_Id', 'desc')
+        ->get();
+
+
+        // dd($all_pembayaran);
+
+
+        $datas = [];
+        $i = 0;
+        $saldo = 0;
+        $saldo2 = 0;
+
+        foreach($all_pembayaran as $data){
+            $datas[$i] =  new \stdCLass;
+            $datas[$i]->Item_Pembayaran_Id = $data->Item_Pembayaran_Id;
+            $datas[$i]->Total_Amount = $data->Jml_Masuk;
+            $datas[$i]->Nama_Item = $data->Keterangan;
+            $datas[$i]->Tgl_Trans = $data->Tgl_Trans;
+            
+            $datas[$i]->Uang_Keluar = $data->Jml_Keluar;
+
+            if($data->Jml_Keluar == null){
+                $saldo+= $data->Jml_Masuk;
+                $saldo2 = $saldo;
+            }else{
+
+                $saldo = $data->Jml_Masuk - $data->Jml_Keluar;
+                $saldo2 = $saldo + $data->Jml_Masuk;
+            }
+
+            
+            $datas[$i]->Saldo = $saldo2;
+
+            $i++;
+        }
+
+        // Item bayar
+        $items = DB::table('item_pembayaran')->get();
+        // dd($datas);
+        return view('transaksi.cashflow.index', compact('Rusun_Id','rusun'))
+        ->with('data',$datas)
+        ->with('items',$items)
+        ->with('all_access',$access);
+
+    }
+
+    public function create(Request $request)
+    {
+        
+        $data1 =[
+            'Tgl_Trans' => date('Y-m-d H:i:s'),
+            'Item_Pembayaran_Id' => $request->jenis,
+            'Jml_Keluar' => $request->jml_kel,
+            'Keterangan' => $request->keterangan,
+            'Created_By' => Auth::user()->name,
+            'Created_Date' => date('Y-m-d H:i:s'),
+        ];
+
+        DB::table('cash_flow')->insert($data1);
+        Alert::success('Berhasil Menambah Data Cashflow', 'Berhasil !');
+        return Redirect::back();
 
     }
 }

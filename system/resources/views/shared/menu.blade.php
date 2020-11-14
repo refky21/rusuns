@@ -51,6 +51,12 @@
      $roleuser = $access->where('name', 'UserRole-View')->count();
      $cekout = $access->where('name', 'CheckOut-View')->count();
      $cashflow = $access->where('name', 'CashFlow-View')->count();
+     $dispensasi = $access->where('name', 'Dispensasi-View')->count();
+     $laporan_harian = $access->where('name', 'LaporanHarian-View')->count();
+     $laporan_bulanan = $access->where('name', 'LaporanBulanan-View')->count();
+     $laporan_tahunan = $access->where('name', 'LaporanTahunan-View')->count();
+     $resume_penyewa = $access->where('name', 'ResumePenyewa-View')->count();
+     $daftar_penyewa = $access->where('name', 'DaftarPenyewa-View')->count();
 
 
 ?>
@@ -122,7 +128,8 @@
       Request::route()->getName() == 'Bulan' ||
       Request::route()->getName() == 'Tahun' ||
       Request::route()->getName() == 'TipeSewa' ||
-      Request::route()->getName() == 'UnitSewa' 
+      Request::route()->getName() == 'UnitSewa' ||
+      Request::route()->getName() == 'Dispensasi' 
     
     ) { echo 'active';} ?>">
         <a href="javaScript:void();" class="waves-effect">
@@ -144,6 +151,9 @@
           <?php } ?>
           <?php if($unit > 0 ){?>
             <li class="<?php if ( Request::route()->getName() == 'UnitSewa') { echo 'active';} ?>"><a href="{{url('unit_sewa')}}"  ><i class="fa fa-long-arrow-right"></i> Unit Disewakan</a></li>
+          <?php } ?>
+          <?php if($dispensasi > 0 ){?>
+            <li class="<?php if ( Request::route()->getName() == 'Dispensasi') { echo 'active';} ?>"><a href="{{url('dispensasi')}}"  ><i class="fa fa-long-arrow-right"></i> Dispensasi Pembayaran</a></li>
           <?php } ?>
          
         </ul>
@@ -185,6 +195,43 @@
           <?php if($cashflow > 0 ){?>
             <li class="<?php if ( Request::route()->getName() == 'CashFlow') { echo 'active';} ?>"><a href="{{url('cashflow')}}"  ><i class="fa fa-long-arrow-right"></i>Cashflow</a></li>
           <?php } ?>
+         
+        </ul>
+       </li>
+    <?php } ?>
+    <?php } ?>
+    <!-- Menu Laporan -->
+      <?php if($Rusun_Id != null ||  Auth::user()->id == 1){?>
+	  <?php if($laporan_harian > 0 || $laporan_bulanan > 0 || $laporan_tahunan > 0 || $resume_penyewa > 0 || $daftar_penyewa > 0){?>
+    <li class="<?php if (
+      Request::route()->getName() == 'LaporanHarian' ||
+      Request::route()->getName() == 'LaporanBulanan' ||
+      Request::route()->getName() == 'LaporanTahunan' ||
+      Request::route()->getName() == 'ResumePenyewa' ||
+      Request::route()->getName() == 'DaftarPenyewa' 
+    
+    ) { echo 'active';} ?>">
+        <a href="javaScript:void();" class="waves-effect">
+          <i class="icon-notebook icons"></i><span>Laporan</span>
+          <i class="fa fa-angle-left float-right"></i>
+        </a>
+        <ul class="sidebar-submenu">
+          <?php if($laporan_harian > 0){?>
+            <li class="<?php if ( Request::route()->getName() == 'LaporanHarian') { echo 'active';} ?>"><a href="{{url('laporan_harian')}}"  ><i class="fa fa-long-arrow-right"></i>Laporan Harian</a></li>
+          <?php } ?>
+          <?php if($laporan_bulanan > 0){?>
+            <li class="<?php if ( Request::route()->getName() == 'LaporanBulanan') { echo 'active';} ?>"><a href="{{url('laporan_bulanan')}}"  ><i class="fa fa-long-arrow-right"></i>Laporan Bulanan</a></li>
+          <?php } ?>
+          <?php if($laporan_tahunan > 0){?>
+            <li class="<?php if ( Request::route()->getName() == 'LaporanTahunan') { echo 'active';} ?>"><a href="{{url('laporan_tahunan')}}"  ><i class="fa fa-long-arrow-right"></i>Laporan Tahunan</a></li>
+          <?php } ?>
+          <?php if($resume_penyewa > 0){?>
+            <li class="<?php if ( Request::route()->getName() == 'ResumePenyewa') { echo 'active';} ?>"><a href="{{url('resume_penyewa')}}"  ><i class="fa fa-long-arrow-right"></i>Resume Penyewa</a></li>
+          <?php } ?>
+          <?php if($daftar_penyewa > 0){?>
+            <li class="<?php if ( Request::route()->getName() == 'DaftarPenyewa') { echo 'active';} ?>"><a href="{{url('daftar_penyewa')}}"  ><i class="fa fa-long-arrow-right"></i>Daftar Penyewa</a></li>
+          <?php } ?>
+         
          
         </ul>
        </li>

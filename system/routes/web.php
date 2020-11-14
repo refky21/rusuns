@@ -19,6 +19,30 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('Home');
 
+// Laporan
+Route::group(['prefix' => '/laporan_harian'], function()
+{
+  Route::get('/', 'LaporanHarianController@index')->name('LaporanHarian');
+});
+
+Route::group(['prefix' => '/laporan_bulanan'], function()
+{
+  Route::get('/', 'LaporanBulananController@index')->name('LaporanBulanan');
+});
+
+Route::group(['prefix' => '/laporan_tahunan'], function()
+{
+  Route::get('/', 'LaporanTahunanController@index')->name('LaporanTahunan');
+});
+Route::group(['prefix' => '/resume_penyewa'], function()
+{
+  Route::get('/', 'ResumePenyewaController@index')->name('ResumePenyewa');
+});
+Route::group(['prefix' => '/daftar_penyewa'], function()
+{
+  Route::get('/', 'DaftarPenyewaController@index')->name('DaftarPenyewa');
+});
+
 // Role & Permission
 Route::group(['prefix' => '/role'], function()
 {
@@ -103,6 +127,16 @@ Route::group(['prefix' => '/unit_sewa'], function()
   Route::get('/getKode', 'UnitSewaController@getKode');
 });
 // ==============================================================================>
+Route::group(['prefix' => '/dispensasi'], function()
+{
+  Route::get('/', 'DispensasiController@index')->name('Dispensasi');
+  Route::get('/detail/{id}', 'DispensasiController@detail');
+  Route::post('/create', 'DispensasiController@create')->name('Dispensasi');
+  Route::post('/update', 'DispensasiController@update')->name('Dispensasi.Update');
+  Route::get('/delete/{id}', 'DispensasiController@delete');
+  Route::get('/getKode', 'DispensasiController@getKode');
+});
+// ==============================================================================>
 // Menu Tramsaksi
 // ==============================================================================>
 Route::group(['prefix' => '/penyewa'], function()
@@ -135,7 +169,7 @@ Route::group(['prefix' => '/pembayaran'], function()
   Route::post('/update', 'Transaksi\PembayaranController@update')->name('Pembayaran.Update');
   Route::post('/edit_keluarga', 'Transaksi\PembayaranController@edit_keluarga')->name('Pembayaran.Update');
   Route::get('/delete/{id}', 'Transaksi\PembayaranController@delete');
-  Route::get('/hapus_keluarga/{id}', 'Transaksi\PembayaranController@hapus_keluarga');
+  Route::get('/cetak/{id}', 'Transaksi\PembayaranController@cetak');
   Route::get('/getTipe', 'Transaksi\PembayaranController@tipe_sewa')->name('Pembayaran');
 });
 Route::group(['prefix' => '/tagihan'], function()
@@ -173,7 +207,7 @@ Route::group(['prefix' => '/checkout'], function()
 Route::group(['prefix' => '/cashflow'], function()
 {
   Route::get('/', 'Transaksi\CashFlowController@index')->name('CashFlow');
-  Route::post('/proses', 'Transaksi\CekOutController@create')->name('CheckOut.Add');
+  Route::post('/create', 'Transaksi\CashFlowController@create')->name('CheckOut.Add');
   Route::post('/update', 'CekInController@update')->name('CheckIn.Update');
   Route::post('/edit_keluarga', 'CekInController@edit_keluarga')->name('CheckIn.Update');
   Route::get('/delete/{id}', 'CekInController@delete');
