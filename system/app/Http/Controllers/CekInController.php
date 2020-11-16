@@ -89,7 +89,7 @@ class CekInController extends Controller
              $Spmu_Num = date('Ymd')."-".$num;
             }
           }else{ // jika belum langsung ditulis 0001 untuk angka pada kode spmu
-            $Spmu_Num = date('Ymd')."-0001"; // menulis kode spmu
+            $Spmu_Num = date('Ymd')."-0001"; // menulis kode spmul
           }
           
           if($Rusun_Id == null){
