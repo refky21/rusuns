@@ -158,12 +158,10 @@
                                     }
                                 ?>
     
-                                <?php if($Check_In_Id !=null && $Tagihan_Id !=null){ if($detail->Diskon == 'Ya'){ ?>
-                                    <tr>
-                                        <td class="text-left" style="font-size:9px;color:red;" colspan="4">Penyewa Ini Mendapatkan Dispensasi Pembayaran Sebesar <b>{{$detail->Persen}}%</b> Dari Total Pembayaran <b>Rp.{{number_format($detail->Belum,0,',','.')}}</b> </td>
-                                    </tr>
+                                <?php if($Check_In_Id !=null && $Tagihan_Id !=null){  ?>
+                                    
 
-                                <?php } } ?>
+                                <?php }  ?>
                             </table>
                         </div>
                         </div>

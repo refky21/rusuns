@@ -97,7 +97,7 @@
                       <th scope="col">#</th>
                       <th scope="col">Kode Rusun</th>
                       <th scope="col">Nama Rusun</th>
-                      <th scope="col">Nama Kasubag TU</th>
+                      <th scope="col">Alamat</th>
                       <th class="text-center" scope="col"><i class="fa fa-cogs"></i></th>
                     </tr>
                   </thead>
@@ -112,7 +112,7 @@
                       <th scope="row">{{$i++}}</th>
                       <td>{{$d->kode_rusun}}</td>
                       <td>{{$d->nama_rusun}}</td>
-                      <td>{{$d->nama_kasubag_tu}}</td>
+                      <td>{{$d->alamat_rusun}}</td>
                       <td>
                       <?php if($all_access->where('name','Rusun-Edit')->count() > 0){ ?>
                       <button type="button" data-toggle="modal" data-target="#edit{{$d->info_id}}" class="btn btn-warning btn-xs waves-effect waves-light"><i class="fa fa-edit"></i> Edit</button>
@@ -153,17 +153,17 @@
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control form-control-square" id="kasubag_tu" name="kasubag_tu" value="{{$d->nama_kasubag_tu}}">
                                         </div>
-                                        <label for="nip_kasubag_tu" class="col-sm-2 col-form-label">NIP Kasubag TU</label>
+                                        <label for="nip_kasubag_tu" class="col-sm-2 col-form-label">NIP</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control form-control-square" id="nip_kasubag_tu" name="nip_kasubag_tu" value="{{$d->nip_kasubag_tu}}">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="kepala_dpu" class="col-sm-2 col-form-label">Kepala DPU</label>
+                                        <label for="kepala_dpu" class="col-sm-2 col-form-label">Kadis Perkim</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control form-control-square" id="kepala_dpu" name="kepala_dpu" value="{{$d->nama_kepala_dpu}}">
                                         </div>
-                                        <label for="nip_kepala_dpu" class="col-sm-2 col-form-label">NIP Kepala DPU</label>
+                                        <label for="nip_kepala_dpu" class="col-sm-2 col-form-label">NIP</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control form-control-square" id="nip_kepala_dpu" name="nip_kepala_dpu" value="{{$d->nip_kepala_dpu}}">
                                         </div>
@@ -173,7 +173,7 @@
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control form-control-square" id="kepala_upt" name="kepala_upt" value="{{$d->nama_kepala_upt}}">
                                         </div>
-                                        <label for="nip_kepala_upt" class="col-sm-2 col-form-label">NIP Kepala DPU</label>
+                                        <label for="nip_kepala_upt" class="col-sm-2 col-form-label">NIP</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control form-control-square" id="nip_kepala_upt" name="nip_kepala_upt" value="{{$d->nip_kepala_upt}}">
                                         </div>

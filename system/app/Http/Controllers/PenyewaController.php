@@ -327,7 +327,7 @@ foreach($query as $q){
  
          if($req->hasFile('foto')){
             $data = [
-                'Rusun_Id' => $Rusun_Id,
+                
                 'No_Reg' => $No_Reg,
                 'Nama' => $Nama,
                 'Tempat_Lahir' => $Tempat_Lahir,
@@ -341,7 +341,7 @@ foreach($query as $q){
             ];
         }else{
             $data = [
-                'Rusun_Id' => $Rusun_Id,
+                
                 'Nama' => $Nama,
                 'Tempat_Lahir' => $Tempat_Lahir,
                 'Tgl_Lahir' => $Tgl_Lahir,

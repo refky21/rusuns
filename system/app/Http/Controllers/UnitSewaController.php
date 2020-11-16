@@ -117,28 +117,7 @@ class UnitSewaController extends Controller
 
 
  
-  if($spmu != null){ // cek jika sudah ada spmu apa belum
-    $exploded_spmu = explode("-",$spmu->Kode_Unit); // memisahkan kode spmu berdasarkan tanda "/"
-    $num = $exploded_spmu[1] + 1; // mengambil angka pada kode spmu dan menjumlahkan
-    $nums =substr($num,2); // mengambil angka pada kode spmu dan menjumlahkan
-
-    $length = strlen($nums); // menghitung panjang karakter dari angka pada kode spmu
-    
-
-    if ($length == 1) {
-     //  $Spmu_Num = "000".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
-       $Spmu_Num = $kode_rusun.'-'.date('y').'0'.$nums; // menulis kode spmu
-    }else if ($length == 2) {
-     //  $Spmu_Num = "00".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
-     $Spmu_Num = $kode_rusun.'-'.date('y').'00'.$nums; // menulis kode spmu
-    }else if ($length == 3) {
-     //  $Spmu_Num = "0".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
-     $Spmu_Num = $kode_rusun.'-'.date('y').$nums;
-    }
-  }else{ // jika belum langsung ditulis 0001 untuk angka pada kode spmu
-    // $Spmu_Num = date('ymd')."-0001"; // menulis kode spmu
-    $Spmu_Num = $kode_rusun.'-'.date('y').'001'; // menulis kode spmu
-  }
+  
   
   //akhir membuat id penyewa
 
@@ -150,7 +129,7 @@ class UnitSewaController extends Controller
         ->with('cari', $cari)
         ->with('rusuns', $rusuns)
         ->with('data', $query)
-        ->with('kode_rusun', $Spmu_Num)
+        ->with('kode_rusun', $kode_rusun)
         ->with('Rusun_Id', $Rusun_Id)
         ->with('tipe_sewa', $tipe_sewa)
         ->with('all_access',$access);
@@ -181,6 +160,7 @@ class UnitSewaController extends Controller
         $Lantai = $req->Lantai;
         $Tarif = $req->Tarif;
         $Keterangan = $req->Keterangan;
+		$Is_Aktif  = $req->Is_Aktif;
         // Rules 
         $rules =  [
             'Rusun_Id' => 'required',
@@ -207,6 +187,7 @@ class UnitSewaController extends Controller
             'Tipe_Sewa_Id' => $Tipe_Sewa_Id,
             'Lantai' => $Lantai,
             'Tarif' => $Tarif,
+			'Is_Aktif' => $Is_Aktif,
             'Keterangan' => $Keterangan,
            ];
 
@@ -247,6 +228,7 @@ class UnitSewaController extends Controller
         $Tipe_Sewa_Id = $req->Tipe_Sewa_Id;
         $Lantai = $req->Lantai;
         $Tarif = $req->Tarif;
+		$Is_Aktif = $req->Is_Aktif;
         $Keterangan = $req->Keterangan;
        
 
@@ -257,6 +239,7 @@ class UnitSewaController extends Controller
             'Tipe_Sewa_Id' => $Tipe_Sewa_Id,
             'Lantai' => $Lantai,
             'Tarif' => $Tarif,
+			'Is_Aktif' => $Is_Aktif,
             'Keterangan' => $Keterangan,
            ];
 

@@ -178,8 +178,15 @@
                                 </div>
                                 <div class="form-group row">
                                     <label for="Keterangan" class="col-sm-2 col-form-label">Keterangan</label>
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-4">
                                     <textarea name="Keterangan" id="Keterangan" class="form-control">{{$d->Keterangan}}</textarea>
+                                    </div>
+									<label for="Is_Aktif" class="col-sm-2 col-form-label">Status Unit</label>
+                                    <div class="col-sm-4">
+                                    <select class="form-control" id="Is_Aktif" name="Is_Aktif">
+                                        <option <?php if($d->Is_Aktif == 1){ echo 'selected';}?> value="1">Aktif</option>
+                                        <option <?php if($d->Is_Aktif == 0){ echo 'selected';}?> value="0">Non-Aktif</option>
+                                    </select>
                                     </div>
                                 </div>
                             
@@ -251,7 +258,7 @@
             <div class="form-group row">
                 <label for="Kode_Unit" class="col-sm-2 col-form-label">Kode Unit</label>
                 <div class="col-sm-10">
-                <input type="text" class="form-control @error('Kode_Unit') is-invalid @enderror"  readonly @if($Rusun_Id != null) value="{{$kode_rusun}}" @endif; name="Kode_Unit" @if($Rusun_Id == null) placeholder="Anda Belum memilih Rusun" @endif;>
+                <input type="text" class="form-control @error('Kode_Unit') is-invalid @enderror"   @if($Rusun_Id != null) value="{{$kode_rusun}}" @endif; name="Kode_Unit" @if($Rusun_Id == null) placeholder="Anda Belum memilih Rusun" @endif;>
                 </div>
             </div>
             <div class="form-group row">
@@ -281,11 +288,19 @@
             </div>
             <div class="form-group row">
                 <label for="Keterangan" class="col-sm-2 col-form-label">Keterangan</label>
-                <div class="col-sm-10">
+                <div class="col-sm-4">
                 <textarea name="Keterangan" id="Keterangan" class="form-control"></textarea>
                 </div>
+				
+				 <label for="status_aplikasi" class="col-sm-2 col-form-label">Status Unit</label>
+                <div class="col-sm-4">
+                <select class="form-control" id="Is_Aktif" name="Is_Aktif">
+                    <option value="1">Aktif</option>
+                    <option value="0">Non-Aktif</option>
+                </select>
+                </div>
             </div>
-		
+			
         </div>
         <div class="modal-footer">
         <button type="button" class="btn btn-inverse-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>

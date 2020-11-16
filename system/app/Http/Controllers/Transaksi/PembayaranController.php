@@ -259,6 +259,8 @@ class PembayaranController extends Controller
         ->join('tagihan','tagihan_detail.Tagihan_Id','=','tagihan.Tagihan_Id')
         ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
         ->where('tagihan_detail.Tagihan_Id', $Tagihan_Id)->get();
+		
+		
 
 
 
@@ -287,10 +289,13 @@ class PembayaranController extends Controller
                 'Persen_Denda' => $persen->Data
             ];
         }else{
-            $dends = null;
+            $dends = 0;
         }
 
-    } // END DENDA
+    }else{
+		$dends = 0	;
+		}
+			// DENDA
        
        
         return view('transaksi.pembayaran.tambah', 

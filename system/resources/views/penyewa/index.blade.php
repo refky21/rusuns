@@ -112,12 +112,13 @@
                   <tbody>
                  <?php
                   $i = ($page->currentpage()-1)* $page->perpage() + 1; 
-                  $no = 1;
+                  $i2 = 1;
+					 $no = 1;
                 foreach($data as $d):
                   $no++;
                 ?>
                     <tr>
-                      <th scope="row">{{$i++}}</th>
+                      <th scope="row">{{$i2++}}</th>
                       <td class="td" id="data<?= $no;?>" data-toggle="collapse" aria-expanded="true" data-target="#collapse<?= $no;?>">{{$d->No_Reg}}
                       <td >{{$d->nama_rusun}}
                       
@@ -140,15 +141,11 @@
                             </div>
                             <div class="modal-body">
                                <div class="row">
-                                <div class="col-md-3">
+                               
+                                <div class="col-md-12">
+                                <img src="{{url('foto/'.$d->foto)}}" width="250" height="350">
+                                </div>
                                 
-                                </div>
-                                <div class="col-md-4">
-                                <img src="{{url('foto/'.$d->foto)}}" width="100" height="100">
-                                </div>
-                                <div class="col-md-4">
-                                
-                                </div>
                                </div>
                             </div>
                             <div class="modal-footer">

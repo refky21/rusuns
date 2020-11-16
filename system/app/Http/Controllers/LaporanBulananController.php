@@ -150,7 +150,7 @@ class LaporanBulananController extends Controller
             $datas[$i]->Jml_Denda = $jml_denda;
 
 
-            $total = $jml_unit + $jml_lis + $jml_air + $jml_denda;
+            $total = $jml_unit + $jml_lis + $jml_air + $jml_denda + $keber;
             $datas[$i]->Jml_Total = $total;
 
 

@@ -110,7 +110,7 @@ class LaporanHarianController extends Controller
 
             $keber = DB::table('pembayaran_detail')->where([['Pembayaran_Id', $d->Pembayaran_Id],['Item_Pembayaran_Id', 4]])->select('Jumlah')->first();
             if($keber != null){
-                $jml_air = $air->Jumlah;
+                $jml_air = $keber->Jumlah;
             }else{
                 $jml_air = 0;
             }
