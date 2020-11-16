@@ -63,7 +63,7 @@ class CekInController extends Controller
         }
 
         $cari = Input::get('search');
-        $rowpage = Input::get('sort');
+        $rowpage = Input::get('rowpage');
         if ($rowpage == null) {
         $rowpage = 10;
         }
@@ -71,27 +71,31 @@ class CekInController extends Controller
         //  Format no cek in = 20191109-0001
         // Buat Nomor Cek In
         $cek_kode = DB::table('check_in')->where('Created_Date', date('Y-m-d'))->first();
-        if($cek_kode != null){ // cek jika sudah ada spmu apa belum
-            $exploded_spmu = explode("-",$cek_kode->Check_In_Id); // memisahkan kode spmu berdasarkan tanda "/"
-            $num = $exploded_spmu[1] + 1; // mengambil angka pada kode spmu dan menjumlahkan
-            $length = strlen($num); // menghitung panjang karakter dari angka pada kode spmu
-            if ($length == 1) {
-             //  $Spmu_Num = "000".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
-              $Spmu_Num = date('Ymd')."-000".$num;
-            }else if ($length == 2) {
-             //  $Spmu_Num = "00".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
-             $Spmu_Num = date('Ymd')."-00".$num;
-            }else if ($length == 3) {
-             //  $Spmu_Num = "0".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
-             $Spmu_Num = date('Ymd')."-0".$num;
-            }else if ($length == 4) {
-             //  $Spmu_Num = $num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
-             $Spmu_Num = date('Ymd')."-".$num;
-            }
-          }else{ // jika belum langsung ditulis 0001 untuk angka pada kode spmu
-            $Spmu_Num = date('Ymd')."-0001"; // menulis kode spmul
-          }
+        $cek_rusn = DB::table('mstr_rusun')->where('info_id', $Rusun_Id)->first()->kode_rusun;
+        // if($cek_kode != null){ // cek jika sudah ada spmu apa belum
+        //     $exploded_spmu = explode("-",$cek_kode->Check_In_Id); // memisahkan kode spmu berdasarkan tanda "/"
+        //     $num = $exploded_spmu[1] + 1; // mengambil angka pada kode spmu dan menjumlahkan
+        //     $length = strlen($num); // menghitung panjang karakter dari angka pada kode spmu
+        //     if ($length == 1) {
+        //      //  $Spmu_Num = "000".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
+        //       $Spmu_Num = date('Ymd')."-000".$num;
+        //     }else if ($length == 2) {
+        //      //  $Spmu_Num = "00".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
+        //      $Spmu_Num = date('Ymd')."-00".$num;
+        //     }else if ($length == 3) {
+        //      //  $Spmu_Num = "0".$num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
+        //      $Spmu_Num = date('Ymd')."-0".$num;
+        //     }else if ($length == 4) {
+        //      //  $Spmu_Num = $num."/spmu"."/".$Department_Acronym."/".$Spp->Fiscal_Year_Id; // menulis kode spmu
+        //      $Spmu_Num = date('Ymd')."-".$num;
+        //     }
+        //   }else{ // jika belum langsung ditulis 0001 untuk angka pada kode spmu
+        //     $Spmu_Num = date('Ymd')."-0001"; // menulis kode spmul
+        //   }
           
+        $Spmu_Num = $cek_rusn.'-'.date('YmdHis');
+
+        // dd($Spmu_Num);
           if($Rusun_Id == null){
             if ($cari == null) {
               $query = DB::table('check_in')
@@ -99,6 +103,7 @@ class CekInController extends Controller
               ->join('tipe_sewa','check_in.Tipe_Sewa_Id','=','tipe_sewa.Tipe_Sewa_Id')
               ->join('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
               ->join('mstr_rusun','unit_sewa.Rusun_Id','=','mstr_rusun.info_id')
+              ->where('Tgl_Check_Out', null)
               ->paginate($rowpage);
             } else {
               $query = DB::table('check_in')
@@ -106,6 +111,7 @@ class CekInController extends Controller
               ->join('tipe_sewa','check_in.Tipe_Sewa_Id','=','tipe_sewa.Tipe_Sewa_Id')
               ->join('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
               ->join('mstr_rusun','unit_sewa.Rusun_Id','=','mstr_rusun.info_id')
+              ->where('Tgl_Check_Out', null)
               ->where('Nama', 'LIKE', '%' . $cari . '%')->OrWhere('Check_In_Id', 'LIKE', '%' . $cari . '%')->paginate($rowpage);
             }
           }else{
@@ -115,6 +121,7 @@ class CekInController extends Controller
               ->join('tipe_sewa','check_in.Tipe_Sewa_Id','=','tipe_sewa.Tipe_Sewa_Id')
               ->join('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
               ->join('mstr_rusun','unit_sewa.Rusun_Id','=','mstr_rusun.info_id')
+              ->where('Tgl_Check_Out', null)
               ->where('info_id', $Rusun_Id)
               ->paginate($rowpage);
             } else {
@@ -139,12 +146,12 @@ class CekInController extends Controller
           if($Rusun_Id != null){
 
             $unit_sewa = DB::table('unit_sewa')->join('mstr_rusun','unit_sewa.Rusun_Id','=','mstr_rusun.info_id')
-            ->where('Rusun_Id', $Rusun_Id)
+            ->where('Rusun_Id', $Rusun_Id)->where('Is_Aktif',1)
             ->WhereNotIn('Unit_Sewa_Id', $used_unit)->get();
           }else{
-            $unit_sewa = DB::table('unit_sewa')->join('mstr_rusun','unit_sewa.Rusun_Id','=','mstr_rusun.info_id')->WhereNotIn('Unit_Sewa_Id', $used_unit)->get();
+            $unit_sewa = DB::table('unit_sewa')->join('mstr_rusun','unit_sewa.Rusun_Id','=','mstr_rusun.info_id')->where('Is_Aktif',1)->WhereNotIn('Unit_Sewa_Id', $used_unit)->get();
           }
-          $unit_sewa2 = DB::table('unit_sewa')->join('mstr_rusun','unit_sewa.Rusun_Id','=','mstr_rusun.info_id')->where('Unit_Sewa_Id', $used_unit)->get();
+          $unit_sewa2 = DB::table('unit_sewa')->join('mstr_rusun','unit_sewa.Rusun_Id','=','mstr_rusun.info_id')->where('Is_Aktif',1)->where('Unit_Sewa_Id', $used_unit)->get();
                   
           $used_penyewa = [];
           foreach($cek_unit as $un){
