@@ -60,7 +60,7 @@ class CekOutController extends Controller
 
 
         $cari = Input::get('search');
-        $rowpage = Input::get('sort');
+        $rowpage = Input::get('rowpage');
         if ($rowpage == null) {
         $rowpage = 10;
         }
@@ -106,6 +106,10 @@ class CekOutController extends Controller
           $datas = [];
           $i = 0;
 
+          $Bulan = date('m'); 
+          $Tahun = date('Y'); 
+
+
           foreach($query as $q){
             $datas[$i] = new \stdClass;
 
@@ -124,30 +128,64 @@ class CekOutController extends Controller
 
 
 
-            $cek_tagihan = DB::table('tagihan')
-            ->join('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')
-            ->where([['Check_In_Id',$q->Check_In_Id]])
-            ->get();
+
+            // $cek_tagihan = DB::table('tagihan')
+            // ->join('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')
+            // ->where([['Check_In_Id',$q->Check_In_Id]])
+            // ->get();
             
+
+            // $used_tagihan = [];
+            // $ii = 0;
+
+            // foreach($cek_tagihan as $tagihan){
+            //     $used_tagihan[$i] = $tagihan->Tagihan_Id;
+
+            //     $ii++;
+            // }
+
+            // $tunggakan = DB::table('pembayaran')
+            // // ->where([['Check_In_Id',$q->Check_In_Id]])
+            // ->WhereNotIn('Tagihan_Id', $used_tagihan)
+            // ->get();
+
+            $cek_tagihan = DB::table('pembayaran_detail')
+            ->join('pembayaran','pembayaran_detail.Pembayaran_Id','=','pembayaran.Pembayaran_Id')
+            ->where([['pembayaran.Check_In_Id',$q->Check_In_Id],['Tahun',$Tahun],['Bulan', $Bulan]])
+            ->get();
 
             $used_tagihan = [];
             $ii = 0;
 
             foreach($cek_tagihan as $tagihan){
-                $used_tagihan[$i] = $tagihan->Tagihan_Id;
+                $used_tagihan[$ii] = $tagihan->Item_Pembayaran_Id;
 
                 $ii++;
             }
 
-            $tunggakan = DB::table('pembayaran')
-            // ->where([['Check_In_Id',$q->Check_In_Id]])
-            ->WhereNotIn('Tagihan_Id', $used_tagihan)
-            ->get();
-            // if(count($pembayaran) > 0){
-            //   $datas[$i]->Tunggakan = [];
-            // }else{
-            // }
-            $datas[$i]->Tunggakan = $tunggakan;
+            // $tagihan = DB::table('pembayaran_detail')
+            // ->join('pembayaran','pembayaran_detail.Pembayaran_Id','=','pembayaran.Pembayaran_Id')
+            // // ->join('tagihan','')
+            // ->where([['Check_In_Id', $Check_In_Id],['pembayaran_detail.Tahun',$Tahun_Id],['pembayaran_detail.Bulan',$Bulan_Id]])
+            // // ->select(['tagihan_detail.Tagihan_Id','Keterangan'])
+            // // ->groupby('tagihan.Tagihan_Id')
+            // ->WhereNotIn('Tagihan_Id', $used_tagihan)->get();
+            
+            $tunggakan = DB::table('tagihan_detail')
+            ->join('tagihan','tagihan_detail.Tagihan_Id','=','tagihan.Tagihan_Id')
+            ->where([['Check_In_Id', $q->Check_In_Id],['tagihan_detail.Tahun',$Tahun],['tagihan_detail.Bulan',$Bulan]])
+            ->select(['tagihan_detail.Tagihan_Id','Keterangan'])
+            ->groupby('Tagihan_Id','Keterangan')
+            ->WhereNotIn('Item_Pembayaran_Id', $used_tagihan)->get();
+
+
+            if($tunggakan != null){
+
+              $datas[$i]->Tunggakan = $tunggakan;
+            }else{
+              $datas[$i]->Tunggakan = [];
+            }
+           
             $i++;
             
           }

@@ -63,6 +63,7 @@
                  
                 <?php 
                     $i = 1;
+                    $penghuni = 0;
                 if($data != null){
                  ?>
                  @foreach($data as $d)
@@ -78,6 +79,9 @@
                      <td>{{$d->Tgl_Check_Out}}</td>
                   </tr>
 
+                  <?php
+                    $penghuni += $d->Jml_Penghuni;
+                  ?>
                 @endforeach
                 <?php } else{ ?>
                     <tr>
@@ -92,6 +96,11 @@
       </div></td>
                     </tr>
                 <?php } ?>
+                <tr>
+                    <th colspan="6" class="text-right">Jumlah Penghuni</th>
+                    <th >{{$penghuni}}</th>
+                    <th colspan="6">Jiwa</th>
+                </tr>
                   </tbody>
                 </table>
              </div>

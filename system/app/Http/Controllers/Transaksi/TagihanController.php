@@ -98,7 +98,15 @@ class TagihanController extends Controller
 
         $Tahun_Id = Input::get('Tahun_Id');
 
-        
+        $Rusun_Id = Input::get('Rusun_Id');
+        $rusun= DB::table('mstr_rusun')->get();
+
+        if($Rusun_Id != null){
+            $session =  $request->session()->put('Rusun_Id', $Rusun_Id);
+        }elseif($Rusun_Id == null && $request->session()->get('Rusun_Id') !=null){
+            $Rusun_Id = $request->session()->get('Rusun_Id');
+        }
+
 
        
         if($Bulan_Id != null){
@@ -118,6 +126,28 @@ class TagihanController extends Controller
 
         // Ambil Unit Sewa Dulu
 
+        // // cek sudah ada tagihan belum
+        // $tagihan = DB::table('tagihan')->where([['tagihan.Bulan',$Bulan_Id],['tagihan.Tahun', $Tahun_Id],['Item_Pembayaran_Id',2]]) 
+        // ->leftjoin('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')->get();
+
+        // $i = 0;
+        // $used_tagihan = [];
+        // foreach($tagihan as $tag){
+        //     $used_tagihan[$i] = $tag->Check_In_Id;
+
+        //     $i++;
+        // }
+        // //dd($tagihan);
+
+
+        // $unit = DB::table('check_in')
+        // ->leftjoin('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
+        // ->leftjoin('tagihan','check_in.Check_In_Id','=','tagihan.Check_In_Id')
+        // ->where([['Bulan',$Bulan_Id],['Tahun', $Tahun_Id]])
+        // ->wherenotin('check_in.Check_In_Id',$used_tagihan)
+        // ->select('check_in.Check_In_Id','unit_sewa.*')
+        // ->get();
+
         // cek sudah ada tagihan belum
         $tagihan = DB::table('tagihan')->where([['tagihan.Bulan',$Bulan_Id],['tagihan.Tahun', $Tahun_Id],['Item_Pembayaran_Id',2]]) 
         ->leftjoin('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')->get();
@@ -129,15 +159,19 @@ class TagihanController extends Controller
 
             $i++;
         }
-        //dd($tagihan);
+       // dd($tagihan);
+		
+		
+			
 
 
-        $unit = DB::table('check_in')
+       $unit = DB::table('check_in')
         ->leftjoin('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
         ->leftjoin('tagihan','check_in.Check_In_Id','=','tagihan.Check_In_Id')
-        // ->where([['Bulan',$Bulan_Id],['Tahun', $Tahun_Id]])
+       ->where([['Rusun_Id', $Rusun_Id], ['Bulan', $Bulan_Id],['Tahun', $Tahun_Id]])
         ->wherenotin('check_in.Check_In_Id',$used_tagihan)
         ->select('check_in.Check_In_Id','unit_sewa.*')
+        ->groupby('check_in.Check_In_Id')
         ->get();
 
 
@@ -566,15 +600,16 @@ class TagihanController extends Controller
        $unit = DB::table('check_in')
         ->leftjoin('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
         ->leftjoin('tagihan','check_in.Check_In_Id','=','tagihan.Check_In_Id')
-       ->where('Rusun_Id', $Rusun_Id)
+       ->where([['Rusun_Id', $Rusun_Id], ['Bulan', $Bulan_Id],['Tahun', $Tahun_Id]])
         ->wherenotin('check_in.Check_In_Id',$used_tagihan)
         ->select('check_in.Check_In_Id','unit_sewa.*')
+        ->groupby('check_in.Check_In_Id')
         ->get();
 		
 
         
 
-        //dd($unit);
+        // dd($unit);
 
         // Ambil Tagihan Detail kemudian Ke Chekin untuk cek berapa yang ada data
         if($Bulan_Id != null && $Tahun_Id !=null){

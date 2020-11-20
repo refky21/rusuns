@@ -52,7 +52,7 @@
                             <div class="input-group-prepend">
                                 <label class="input-group-text" for="inputGroupSelect01">Sort</label>
                             </div>
-                            <select class="custom-select" name="sort" onchange="this.form.submit()">
+                            <select class="custom-select" name="rowpage" onchange="this.form.submit()">
                                 <option value="10" <?php if ($rowpage  == "10") {
                                                                         echo "selected";
                                                                     } ?>>10</option>
@@ -238,6 +238,21 @@
 
                      </div> <!-- End Table Responsive -->
                 </div><!-- End Col Md -->
+                <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-4">
+                        
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-4">
+                    {{ $data->links('pagination') }}
+                       
+                    </div>
+                </div>
+                
+            </div>
             </div><!-- End Row -->
 
 

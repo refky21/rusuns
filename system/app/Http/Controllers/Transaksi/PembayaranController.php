@@ -331,6 +331,20 @@ class PembayaranController extends Controller
         }
 
         // dd($req->all());
+        $Rusun_Id = Input::get('Rusun_Id');
+
+        // Get Rusun 
+
+        $rusun= DB::table('mstr_rusun')->get();
+
+        // dd($rusun);
+
+       
+        if($Rusun_Id != null){
+            $session =  $req->session()->put('Rusun_Id', $Rusun_Id);
+        }elseif($Rusun_Id == null && $req->session()->get('Rusun_Id') !=null){
+            $Rusun_Id = $req->session()->get('Rusun_Id');
+        }
 
         $item_pembayaran = $req->Item_Pembayaran;
         $panjang = count($item_pembayaran);
@@ -378,6 +392,7 @@ class PembayaranController extends Controller
                 'Tgl_Trans' => date('Y-m-d H:i:s'),
                 'Item_Pembayaran_Id' =>$req->Item_Pembayaran[$i],
                 'Jml_Masuk' => $req->Jumlah[$i],
+                'Rusun_Id' => $Rusun_Id,
                 'Keterangan' => 'Penerimaan '.$ambil_item->Nama_Item
             ];
         DB::table('cash_flow')->insert($data4);
