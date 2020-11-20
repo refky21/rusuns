@@ -199,11 +199,6 @@ class CekOutController extends Controller
 
 
         return view('transaksi.cekout.index',compact(
-            'unit_sewa',
-            'unit_sewa2',
-            'penyewa',
-            'penyewa2',
-            'tipe',
             'rusun',
             'Rusun_Id'
         ))
