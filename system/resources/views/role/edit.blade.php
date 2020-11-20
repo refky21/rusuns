@@ -230,6 +230,13 @@
                                 <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','Tagihan-Delete')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','Tagihan-Delete')->first()->access_id)->first() != null){echo "checked";} ?>></td>
                             </tr>
                             <tr>
+                                <td>Cetak Tagihan</td>
+                                <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','Cetak-View')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','Cetak-View')->first()->access_id)->first() != null){echo "checked";} ?>></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                            </tr>
+                            <tr>
                                 <td>Pembayaran</td>
                                 <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','Pembayaran-View')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','Pembayaran-View')->first()->access_id)->first() != null){echo "checked";} ?>></td>
                                 <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$RoleList->where('name','Pembayaran-Add')->first()->access_id}}" <?php if($UsedRoles->where('access_id',$RoleList->where('name','Pembayaran-Add')->first()->access_id)->first() != null){echo "checked";} ?>></td>

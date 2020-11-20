@@ -43,6 +43,13 @@ Route::group(['prefix' => '/daftar_penyewa'], function()
   Route::get('/', 'DaftarPenyewaController@index')->name('DaftarPenyewa');
 });
 
+//  Cetak Tagihan
+Route::group(['prefix' => '/cetak_tagihan'], function()
+{
+  Route::get('/', 'CetakTagihanPenyewa@index')->name('CetakTagihan');
+  Route::get('/print/{id}', 'CetakTagihanPenyewa@cetak');
+});
+
 // Role & Permission
 Route::group(['prefix' => '/role'], function()
 {

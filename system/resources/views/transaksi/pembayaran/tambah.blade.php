@@ -105,14 +105,14 @@
                                 @foreach($detail_tagihan as $detail)
                                 <input type="hidden" name="Check_In_Id" value="{{$detail->Check_In_Id}}">
                                 <input type="hidden" name="Tgl_Bayar[]" value="{{date('Y-m-d')}}">
-                                <input type="hidden" name="Keterangan[]" value="{{$detail->Keterangan}}">
+                                <input type="hidden" name="Keterangan[]" value="{{$detail->Nama_Item}}">
                                 <input type="hidden" name="Item_Pembayaran[]" value="{{$detail->Item_Pembayaran_Id}}">
                                 <input type="hidden" name="Tahun" value="{{$Tahun_Id}}">
                                 <input type="hidden" name="Tagihan_Id" value="{{$Tagihan_Id}}">
                                 <input type="hidden" name="Bulan" value="{{$Bulan_Id}}">
                                 <input type="hidden" name="Jumlah[]" value="{{$detail->Jumlah}}">
                                 <tr>
-                                    <td>{{$detail->Keterangan}} </td>
+                                    <td>{{$detail->Nama_Item}} </td>
                                     <td>{{$Tahun_Id}}</td>
                                     <td>{{$Bulan_Id}}</td>
                                     <td class="text-right">{{number_format($detail->Jumlah,0,',','.')}}</td>

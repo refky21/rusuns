@@ -226,6 +226,13 @@
                                 <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$group->where('name','Tagihan-Delete')->first()->access_id}}"></td>
                             </tr>
                             <tr>
+                                <td>Cetak Tagihan</td>
+                                <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$group->where('name','Cetak-View')->first()->access_id}}"></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                                <td style="text-align:center;"></td>
+                            </tr>
+                            <tr>
                                 <td>Pembayaran</td>
                                 <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$group->where('name','Pembayaran-View')->first()->access_id}}"></td>
                                 <td style="text-align:center;"><input type="checkbox" name="selectedRoles[]" value="{{$group->where('name','Pembayaran-Add')->first()->access_id}}"></td>

@@ -259,7 +259,9 @@ class PembayaranController extends Controller
         ->join('tagihan','tagihan_detail.Tagihan_Id','=','tagihan.Tagihan_Id')
         ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
         ->where('tagihan_detail.Tagihan_Id', $Tagihan_Id)->get();
-		
+        
+        
+        // dd($detail_tagihan);
 		
 
 
@@ -267,6 +269,8 @@ class PembayaranController extends Controller
         // cek denda
         $tgl = DB::table('mstr_option')->where('Keys', 'DefTglByr')->first();
         $denda = DB::table('tagihan')->where('Tagihan_Id', $Tagihan_Id)->first();
+
+        // dd($denda);
 
         // ambil tanggal sekarang 
         $today = date('Y-m-d');
@@ -278,8 +282,10 @@ class PembayaranController extends Controller
        
         $cek =  $tempo >= $tgl_bayar;
 
+        // dd($tgl_bayar);
 
-        if($tempo > $today){
+
+        if($today > $tempo && $tgl_bayar <= $tempo){
             $item_denda = DB::table('item_pembayaran')->where('Item_Pembayaran_Id', 7)->first();
             $persen = DB::table('mstr_option')->where('Keys', 'DefDendBayar')->first();
             $dends = [
@@ -295,7 +301,9 @@ class PembayaranController extends Controller
     }else{
 		$dends = 0	;
 		}
-			// DENDA
+            // DENDA
+            
+            // dd($dends);
        
        
         return view('transaksi.pembayaran.tambah', 

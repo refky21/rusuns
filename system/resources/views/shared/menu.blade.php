@@ -57,6 +57,7 @@
      $laporan_tahunan = $access->where('name', 'LaporanTahunan-View')->count();
      $resume_penyewa = $access->where('name', 'ResumePenyewa-View')->count();
      $daftar_penyewa = $access->where('name', 'DaftarPenyewa-View')->count();
+     $cetak_tagihan = $access->where('name', 'Cetak-View')->count();
 
 
 ?>
@@ -168,6 +169,7 @@
       Request::route()->getName() == 'CheckIn' ||
       Request::route()->getName() == 'Pembayaran' ||
       Request::route()->getName() == 'Tagihan' ||
+      Request::route()->getName() == 'CetakTagihan' ||
       Request::route()->getName() == 'CheckOut' ||
       Request::route()->getName() == 'CashFlow' 
     
@@ -185,6 +187,9 @@
           <?php } ?>
           <?php if($tagihan > 0 ){?>
             <li class="<?php if ( Request::route()->getName() == 'Tagihan') { echo 'active';} ?>"><a href="{{url('tagihan')}}"  ><i class="fa fa-long-arrow-right"></i>Tagihan</a></li>
+          <?php } ?>
+          <?php if($cetak_tagihan > 0 ){?>
+            <li class="<?php if ( Request::route()->getName() == 'CetakTagihan') { echo 'active';} ?>"><a href="{{url('cetak_tagihan')}}"  ><i class="fa fa-long-arrow-right"></i> Cetak Tagihan</a></li>
           <?php } ?>
           <?php if($pembayaran > 0 ){?>
             <li class="<?php if ( Request::route()->getName() == 'Pembayaran') { echo 'active';} ?>"><a href="{{url('pembayaran')}}"  ><i class="fa fa-long-arrow-right"></i>Pembayaran</a></li>

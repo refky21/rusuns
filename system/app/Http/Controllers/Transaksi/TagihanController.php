@@ -57,11 +57,7 @@ class TagihanController extends Controller
         // dd($rusun);
 
        
-        if($Rusun_Id != null){
-            $session =  $request->session()->put('Rusun_Id', $Rusun_Id);
-        }elseif($Rusun_Id == null && $request->session()->get('Rusun_Id') !=null){
-            $Rusun_Id = $request->session()->get('Rusun_Id');
-        }
+        
 
         // dd($rusun);
 
@@ -150,7 +146,7 @@ class TagihanController extends Controller
 
         // cek sudah ada tagihan belum
         $tagihan = DB::table('tagihan')->where([['tagihan.Bulan',$Bulan_Id],['tagihan.Tahun', $Tahun_Id],['Item_Pembayaran_Id',2]]) 
-        ->leftjoin('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')->get();
+        ->join('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')->get();
 
         $i = 0;
         $used_tagihan = [];
@@ -159,7 +155,7 @@ class TagihanController extends Controller
 
             $i++;
         }
-       // dd($tagihan);
+    //    dd($tagihan);
 		
 		
 			
@@ -167,8 +163,8 @@ class TagihanController extends Controller
 
        $unit = DB::table('check_in')
         ->leftjoin('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
-        ->leftjoin('tagihan','check_in.Check_In_Id','=','tagihan.Check_In_Id')
-       ->where([['Rusun_Id', $Rusun_Id], ['Bulan', $Bulan_Id],['Tahun', $Tahun_Id]])
+        // ->leftjoin('tagihan','check_in.Check_In_Id','=','tagihan.Check_In_Id')
+       ->where([['Rusun_Id', $Rusun_Id]])
         ->wherenotin('check_in.Check_In_Id',$used_tagihan)
         ->select('check_in.Check_In_Id','unit_sewa.*')
         ->groupby('check_in.Check_In_Id')
@@ -599,8 +595,8 @@ class TagihanController extends Controller
 
        $unit = DB::table('check_in')
         ->leftjoin('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
-        ->leftjoin('tagihan','check_in.Check_In_Id','=','tagihan.Check_In_Id')
-       ->where([['Rusun_Id', $Rusun_Id], ['Bulan', $Bulan_Id],['Tahun', $Tahun_Id]])
+        // ->leftjoin('tagihan','check_in.Check_In_Id','=','tagihan.Check_In_Id')
+       ->where([['Rusun_Id', $Rusun_Id]])
         ->wherenotin('check_in.Check_In_Id',$used_tagihan)
         ->select('check_in.Check_In_Id','unit_sewa.*')
         ->groupby('check_in.Check_In_Id')
@@ -941,6 +937,16 @@ class TagihanController extends Controller
         $Bulan_Id = Input::get('Bulan_Id');
 
         $Tahun_Id = Input::get('Tahun_Id');
+        
+        $Rusun_Id = Input::get('Rusun_Id');
+        $rusun = DB::table('mstr_rusun')->get();
+
+
+        if($Rusun_Id != null){
+            $session =  $request->session()->put('Rusun_Id', $Rusun_Id);
+        }elseif($Rusun_Id == null && $request->session()->get('Rusun_Id') !=null){
+            $Rusun_Id = $request->session()->get('Rusun_Id');
+        }
 
        
         if($Bulan_Id != null){
@@ -994,8 +1000,13 @@ class TagihanController extends Controller
             $ambil_iuran =  $query = DB::table('tagihan_detail')
             ->where(['Tahun' => $q->Tahun, 'Bulan' => $q->Bulan,'Item_Pembayaran_Id' => 4,'Tagihan_Id' => $q->Tagihan_Id])
             ->first();
-            $datas[$i]['Iuran_Kebersihan'] = $ambil_iuran->Jumlah;
-            $datas[$i]['Total'] = $q->Jumlah + $ambil_iuran->Jumlah;
+            if($ambil_iuran != null){
+                $datas[$i]['Iuran_Kebersihan'] = $ambil_iuran->Jumlah;
+                $datas[$i]['Total'] = $q->Jumlah + $ambil_iuran->Jumlah;
+            }else{
+                $datas[$i]['Iuran_Kebersihan'] = 0;
+                $datas[$i]['Total'] = $q->Jumlah;
+            }
             $i++;
         }
 
@@ -1008,15 +1019,18 @@ class TagihanController extends Controller
             $datas = [];
         }
 
+
+        // dd($datas);
+
         // Statis Data
-        $Rusun_Id = Input::get('Rusun_Id');
-        $rusun = DB::table('mstr_rusun')->get();
+       
 
         return view('transaksi.tagihan.sewa_bulan.index', compact(
                 'bulan',
                 'tahun',
                 'Bulan_Id',
                 'Tahun_Id',
+                'Rusun_Id',
                 'bulan_sewa',
                 'tahun_sewa'
             )
