@@ -56,6 +56,7 @@ class ResumePenyewaController extends Controller
         $data = DB::table('check_in')->where('Check_Out', null)
         ->join('penyewa','check_in.Penyewa_Id','=','penyewa.Penyewa_Id')
         ->join('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
+        ->where('penyewa.Rusun_Id', $Rusun_Id)
         ->get();
 
         $datas = [];
