@@ -228,7 +228,7 @@ class CetakTagihanPenyewa extends Controller
         }
 
         $mstr_rusun = DB::table('mstr_rusun')->where('info_id', $Rusun_Id)->first();
-        $mstr_bulan = DB::table('bulan')->where('Bulan_Id', $Bulan_Id-1)->first();
+        $mstr_bulan = DB::table('bulan')->where('Bulan_Id', $Bulan_Id)->first();
         $mstr_thn = DB::table('tahun')->where('Tahun_Id', $Tahun_Id)->first();
 
         $tagihan = DB::table('tagihan')
@@ -290,7 +290,9 @@ class CetakTagihanPenyewa extends Controller
                 ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
                 ->where(['tagihan_detail.Tahun' => $Tahun_Id, 'tagihan_detail.Bulan' => $Bulan_Id-1,'tagihan_detail.Item_Pembayaran_Id' => 2,'Check_In_Id' => $d->Check_In_Id])
                 ->first();
-                $datas[$i]['Nama_Tagihan'] = $tg->Nama_Item. ' - '.$mstr_bulan->Nama_Bulan.' '.$mstr_thn->nama_tahun ;
+
+                $mb = DB::table('bulan')->where('Bulan_Id', $Bulan_Id-1)->first();
+                $datas[$i]['Nama_Tagihan'] = $tg->Nama_Item. ' - '.$mb->Nama_Bulan.' '.$mstr_thn->nama_tahun ;
                 $datas[$i]['Jumlah'] = $tg->Jumlah;
                 $jum_nom += $tg->Jumlah;
 
@@ -305,7 +307,8 @@ class CetakTagihanPenyewa extends Controller
                 ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
                 ->where(['tagihan_detail.Tahun' => $Tahun_Id, 'tagihan_detail.Bulan' => $Bulan_Id-1,'tagihan_detail.Item_Pembayaran_Id' => 3,'Check_In_Id' => $d->Check_In_Id])
                 ->first();
-                $datas[$i]['Nama_Tagihan'] = $tg->Nama_Item. ' - '.$mstr_bulan->Nama_Bulan.' '.$mstr_thn->nama_tahun ;
+                $mb = DB::table('bulan')->where('Bulan_Id', $Bulan_Id-1)->first();
+                $datas[$i]['Nama_Tagihan'] = $tg->Nama_Item. ' - '.$mb->Nama_Bulan.' '.$mstr_thn->nama_tahun ;
                 $datas[$i]['Jumlah'] = $tg->Jumlah;
                 $jum_nom += $tg->Jumlah;
             }else{
