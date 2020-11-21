@@ -87,12 +87,8 @@
                   <thead class="thead-secondary shadow-secondary">
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col" width="30%">Kode Sewa</th>
-                      <th scope="col"  width="30%">Penyewa</th>
-                      <th scope="col">Tagihan Bulanan</th>
-                      <th scope="col">Tagihan Listrik</th>
-                      <th scope="col">Tagihan Air</th>
-                      <th scope="col">Iuran Kebersihan</th>
+                      <th scope="col" width="20%">Kode Sewa</th>
+                      <th scope="col"  width="80%">Penyewa</th>
                       <th scope="col">Aksi</th>
                     </tr>
                   </thead>
@@ -105,10 +101,10 @@
                             <th>{{$no++}}</th>
                             <td>{{$d['No_Reg']}}</td>
                             <td>{{$d['Penyewa']}}</td>
-                            <td class="text-right">Rp. {{number_format($d['Tagihan_Bulanan'],0,',','.')}}</td>
+                            <!-- <td class="text-right">Rp. {{number_format($d['Tagihan_Bulanan'],0,',','.')}}</td>
                             <td class="text-right">Rp. {{number_format($d['Tagihan_Listrik'],0,',','.')}}</td>
                             <td class="text-right">Rp. {{number_format($d['Tagihan_Air'],0,',','.')}}</td>
-                            <td class="text-right">Rp. {{number_format($d['Tagihan_Kebersihan'],0,',','.')}}</td>
+                            <td class="text-right">Rp. {{number_format($d['Tagihan_Kebersihan'],0,',','.')}}</td> -->
                             <td class="text-right"><a target="_blank" href="{{url('/cetak_tagihan/print/'.$d['Check_In_Id'])}}"  class="btn btn-warning btn-xs waves-effect waves-light"><i class="fa fa-print"></i> Cetak</a></td>
                         </tr>
                     <?php endforeach;?>
