@@ -164,10 +164,10 @@ class TagihanController extends Controller
        $unit = DB::table('check_in')
         ->leftjoin('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
         // ->leftjoin('tagihan','check_in.Check_In_Id','=','tagihan.Check_In_Id')
-       ->where([['Rusun_Id', $Rusun_Id],['Tgl_Check_Out',null]])
+       ->where([['Rusun_Id', $Rusun_Id]])
         ->wherenotin('check_in.Check_In_Id',$used_tagihan)
         ->select('check_in.Check_In_Id','unit_sewa.*')
-        // ->groupby('check_in.Check_In_Id')
+        ->groupby('check_in.Check_In_Id')
         ->get();
 
 
@@ -270,7 +270,7 @@ class TagihanController extends Controller
 
         // Ambil Bulannya
 
-        $bulan = DB::table('bulan')->where('Bulan_Id',$Bulan_Id-1)->first();
+        $bulan = DB::table('bulan')->where('Bulan_Id',$Bulan_Id)->first();
 
 
         $tgl = DB::table('mstr_option')->where('Keys', 'DefTglByr')->first();
@@ -279,7 +279,7 @@ class TagihanController extends Controller
         $data = [
             'Check_In_Id' => $Checkin_Id,
             'Tgl_Tagihan' => $tempo,
-            'Keterangan' => 'Iuran Listrik Bulan - '.$bulan->Nama_Bulan.' '.$Tahun_Id,
+            'Keterangan' => 'Iuran Listrik Bulan '.$bulan->Nama_Bulan.' '.$Tahun_Id,
             'Tahun' => $Tahun_Id,
             'Bulan' => $Bulan_Id,
             'Created_By' => Auth::user()->name,
@@ -336,7 +336,7 @@ class TagihanController extends Controller
 
         // Ambil Bulannya
 
-        $bulan = DB::table('bulan')->where('Bulan_Id',$Bulan_Id-1)->first();
+        $bulan = DB::table('bulan')->where('Bulan_Id',$Bulan_Id)->first();
 
 
         $tgl = DB::table('mstr_option')->where('Keys', 'DefTglByr')->first();
@@ -344,7 +344,7 @@ class TagihanController extends Controller
 
         $data = [
             'Tgl_Tagihan' => $tempo,
-            'Keterangan' => 'Iuran Listrik Bulan - '.$bulan->Nama_Bulan.' '.$Tahun_Id,
+            'Keterangan' => 'Iuran Listrik Bulan '.$bulan->Nama_Bulan.' '.$Tahun_Id,
             'Tahun' => $Tahun_Id,
             'Bulan' => $Bulan_Id,
             'Created_By' => Auth::user()->name,
@@ -596,10 +596,10 @@ class TagihanController extends Controller
        $unit = DB::table('check_in')
         ->leftjoin('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
         // ->leftjoin('tagihan','check_in.Check_In_Id','=','tagihan.Check_In_Id')
-       ->where([['Rusun_Id', $Rusun_Id],['Tgl_Check_Out',null]])
+       ->where([['Rusun_Id', $Rusun_Id]])
         ->wherenotin('check_in.Check_In_Id',$used_tagihan)
         ->select('check_in.Check_In_Id','unit_sewa.*')
-        // ->groupby('check_in.Check_In_Id')
+        ->groupby('check_in.Check_In_Id')
         ->get();
 		
 
@@ -666,7 +666,7 @@ class TagihanController extends Controller
 
         // Ambil Bulannya
 
-        $bulan = DB::table('bulan')->where('Bulan_Id',$Bulan_Id-1)->first();
+        $bulan = DB::table('bulan')->where('Bulan_Id',$Bulan_Id)->first();
 
 
         $tgl = DB::table('mstr_option')->where('Keys', 'DefTglByr')->first();
@@ -675,7 +675,7 @@ class TagihanController extends Controller
         $data = [
             'Check_In_Id' => $Checkin_Id,
             'Tgl_Tagihan' => $tempo,
-            'Keterangan' => 'Iuran Air Bulan - '.$bulan->Nama_Bulan.' '.$Tahun_Id,
+            'Keterangan' => 'Iuran Air Bulan '.$bulan->Nama_Bulan.' '.$Tahun_Id,
             'Tahun' => $Tahun_Id,
             'Bulan' => $Bulan_Id,
             'Created_By' => Auth::user()->name,
@@ -733,7 +733,7 @@ class TagihanController extends Controller
 
         // Ambil Bulannya
 
-        $bulan = DB::table('bulan')->where('Bulan_Id',$Bulan_Id-1)->first();
+        $bulan = DB::table('bulan')->where('Bulan_Id',$Bulan_Id)->first();
 
 
         $tgl = DB::table('mstr_option')->where('Keys', 'DefTglByr')->first();
@@ -741,7 +741,7 @@ class TagihanController extends Controller
 
         $data = [
             'Tgl_Tagihan' => $tempo,
-            'Keterangan' => 'Iuran Air Bulan - '.$bulan->Nama_Bulan.' '.$Tahun_Id,
+            'Keterangan' => 'Iuran Air Bulan '.$bulan->Nama_Bulan.' '.$Tahun_Id,
             'Tahun' => $Tahun_Id,
             'Bulan' => $Bulan_Id,
             'Created_By' => Auth::user()->name,
@@ -1061,7 +1061,7 @@ class TagihanController extends Controller
                 $data = [
                     'Check_In_Id' => $cek->Check_In_Id,
                     'Tgl_Tagihan' => date('Y-m-d H:i:s'),
-                    'Keterangan' => 'Tagihan Sewa Bulan - '.$bulan_sewa->Nama_Bulan,
+                    'Keterangan' => 'Tagihan Sewa Bulanan - '.$bulan_sewa->Nama_Bulan,
                     'Tahun' => $tahun_sewa->nama_tahun,
                     'Bulan' => $bulan_sewa->Bulan_Id,
                     'Created_By' => Auth::user()->name,

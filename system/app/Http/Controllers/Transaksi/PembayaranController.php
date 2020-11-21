@@ -123,6 +123,7 @@ class PembayaranController extends Controller
                 ->groupby('pembayaran_detail.Pembayaran_Id')
                 ->groupby('pembayaran.Check_In_Id','pembayaran.Keterangan','unit_sewa.Nama_Unit','mstr_rusun.nama_rusun','penyewa.Nama','pembayaran.Tgl_Bayar','pembayaran_detail.Pembayaran_Id')
                 ->where([['Bulan',$Bulan_Id],['Tahun',$Tahun_Id],['info_id',$Rusun_Id]])
+                ->orderby('Pembayaran_Id','desc')
                 ->get();
             }else{
                 $ambil = [];
