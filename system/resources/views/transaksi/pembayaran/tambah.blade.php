@@ -109,12 +109,23 @@
                                 <input type="hidden" name="Item_Pembayaran[]" value="{{$detail->Item_Pembayaran_Id}}">
                                 <input type="hidden" name="Tahun" value="{{$Tahun_Id}}">
                                 <input type="hidden" name="Tagihan_Id" value="{{$Tagihan_Id}}">
+                                @if($detail->Item_Pembayaran_Id == 3 || $detail->Item_Pembayaran_Id == 2)
+                                <input type="hidden" name="Bulan" value="{{$Bulan_Id-1}}">
+                                @else
                                 <input type="hidden" name="Bulan" value="{{$Bulan_Id}}">
+                                @endif
+
                                 <input type="hidden" name="Jumlah[]" value="{{$detail->Jumlah}}">
                                 <tr>
                                     <td>{{$detail->Nama_Item}} </td>
                                     <td>{{$Tahun_Id}}</td>
-                                    <td>{{$Bulan_Id}}</td>
+                                    <td>
+                                        @if($detail->Item_Pembayaran_Id == 3 || $detail->Item_Pembayaran_Id == 2)
+                                            {{$Bulan_Id-1}}
+                                        @else 
+                                            {{$Bulan_Id}}
+                                        @endif
+                                    </td>
                                     <td class="text-right">{{number_format($detail->Jumlah,0,',','.')}}</td>
                                 </tr>
 

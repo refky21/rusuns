@@ -132,7 +132,7 @@ class CetakTagihanPenyewa extends Controller
             }
             $ambil_listrik =  DB::table('tagihan')
             ->join('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')
-            ->where(['tagihan_detail.Tahun' => $Tahun_Id, 'tagihan_detail.Bulan' => $Bulan_Id,'Item_Pembayaran_Id' => 2,'Check_In_Id' => $q->Check_In_Id])
+            ->where(['tagihan_detail.Tahun' => $Tahun_Id, 'tagihan_detail.Bulan' => $Bulan_Id-1,'Item_Pembayaran_Id' => 2,'Check_In_Id' => $q->Check_In_Id])
             ->first();
 
             if($ambil_listrik != null){
@@ -142,7 +142,7 @@ class CetakTagihanPenyewa extends Controller
             }
             $air =  DB::table('tagihan')
             ->join('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')
-            ->where(['tagihan_detail.Tahun' => $Tahun_Id, 'tagihan_detail.Bulan' => $Bulan_Id,'Item_Pembayaran_Id' => 3,'Check_In_Id' => $q->Check_In_Id])
+            ->where(['tagihan_detail.Tahun' => $Tahun_Id, 'tagihan_detail.Bulan' => $Bulan_Id-1,'Item_Pembayaran_Id' => 3,'Check_In_Id' => $q->Check_In_Id])
             ->first();
 
             if($air != null){
@@ -175,7 +175,7 @@ class CetakTagihanPenyewa extends Controller
         }
 
 
-        // dd($datas);
+        // dd($Bulan_Id);
 
         // Statis Data
        
@@ -228,13 +228,13 @@ class CetakTagihanPenyewa extends Controller
         }
 
         $mstr_rusun = DB::table('mstr_rusun')->where('info_id', $Rusun_Id)->first();
-        $mstr_bulan = DB::table('bulan')->where('Bulan_Id', $Bulan_Id)->first();
+        $mstr_bulan = DB::table('bulan')->where('Bulan_Id', $Bulan_Id-1)->first();
         $mstr_thn = DB::table('tahun')->where('Tahun_Id', $Tahun_Id)->first();
 
-        $tagihan = DB::table('tagihan_detail')
-        ->join('tagihan','tagihan_detail.Tagihan_Id','=','tagihan.Tagihan_Id')
+        $tagihan = DB::table('tagihan')
+        ->join('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')
         ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
-        ->where([['Check_In_Id',$id],['tagihan_detail.Tahun',$Tahun_Id],['tagihan_detail.Bulan',$Bulan_Id]])
+        ->where([['Check_In_Id',$id],['tagihan.Tahun', $Tahun_Id],['tagihan.Bulan', $Bulan_Id]])
         ->get();
 
         $datas = [];
@@ -242,29 +242,30 @@ class CetakTagihanPenyewa extends Controller
         $jum_nom = 0;
         
         // dd($tagihan);
-        $cek_tagihan = DB::table('pembayaran_detail')
-            ->join('pembayaran','pembayaran_detail.Pembayaran_Id','=','pembayaran.Pembayaran_Id')
-            ->where([['pembayaran.Check_In_Id',$id]])
-            ->get();
+        // $cek_tagihan = DB::table('pembayaran_detail')
+        //     ->join('pembayaran','pembayaran_detail.Pembayaran_Id','=','pembayaran.Pembayaran_Id')
+        //     ->where([['pembayaran.Check_In_Id',$id]])
+        //     ->get();
 
-            $used_tagihan = [];
-            $ii = 0;
+        //     $used_tagihan = [];
+        //     $ii = 0;
 
-            foreach($cek_tagihan as $tg){
-                $used_tagihan[$i] = $tg->Tagihan_Id;
+        //     foreach($cek_tagihan as $tg){
+        //         $used_tagihan[$i] = $tg->Tagihan_Id;
 
-                $ii++;
-            }
+        //         $ii++;
+        //     }
 
-            $belum_bayar = DB::table('tagihan_detail')
-            ->join('tagihan','tagihan_detail.Tagihan_Id','=','tagihan.Tagihan_Id')
-            ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
-            ->where([['tagihan.Check_In_Id',$id]])
-            ->WhereNotIn('tagihan_detail.Tagihan_Id', $used_tagihan)
-            ->get();
+        //     $belum_bayar = DB::table('tagihan_detail')
+        //     ->join('tagihan','tagihan_detail.Tagihan_Id','=','tagihan.Tagihan_Id')
+        //     ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
+        //     ->where([['tagihan.Check_In_Id',$id]])
+        //     ->WhereNotIn('tagihan_detail.Tagihan_Id', $used_tagihan)
+        //     ->get();
 
-        $i3 = 0;
-        $dt = [];
+        // $i3 = 0;
+        // $dt = [];
+        
 
         // dd($belum_bayar);
         foreach($tagihan as $d){
@@ -278,14 +279,41 @@ class CetakTagihanPenyewa extends Controller
            
 
             if($d->Item_Pembayaran_Id == 2){
-                $datas[$i]['Nama_Tagihan'] = $d->Nama_Item. ' - '.$mstr_bulan->Nama_Bulan.' '.$mstr_thn->nama_tahun ;
+                
+                // $tg = DB::table('tagihan_detail')
+                // ->join('tagihan','tagihan_detail.Tagihan_Id','=','tagihan.Tagihan_Id')
+                // ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
+                // ->where([['Check_In_Id',$id],['tagihan_detail.Tahun',$Tahun_Id],['tagihan_detail.Bulan',$Bulan_Id],['tagihan_detail.Item_Pembayaran_Id',2]])
+                // ->first();
+                $tg =  DB::table('tagihan')
+                ->join('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')
+                ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
+                ->where(['tagihan_detail.Tahun' => $Tahun_Id, 'tagihan_detail.Bulan' => $Bulan_Id-1,'tagihan_detail.Item_Pembayaran_Id' => 2,'Check_In_Id' => $d->Check_In_Id])
+                ->first();
+                $datas[$i]['Nama_Tagihan'] = $tg->Nama_Item. ' - '.$mstr_bulan->Nama_Bulan.' '.$mstr_thn->nama_tahun ;
+                $datas[$i]['Jumlah'] = $tg->Jumlah;
+                $jum_nom += $tg->Jumlah;
+
             }elseif($d->Item_Pembayaran_Id == 3){
-                $datas[$i]['Nama_Tagihan'] = $d->Nama_Item. ' - '.$mstr_bulan->Nama_Bulan.' '.$mstr_thn->nama_tahun ;
+                // $tg = DB::table('tagihan_detail')
+                // ->join('tagihan','tagihan_detail.Tagihan_Id','=','tagihan.Tagihan_Id')
+                // ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
+                // ->where([['Check_In_Id',$id],['tagihan_detail.Tahun',$Tahun_Id],['tagihan_detail.Bulan',$Bulan_Id],['tagihan_detail.Item_Pembayaran_Id',3]])
+                // ->first();
+                $tg =  DB::table('tagihan')
+                ->join('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')
+                ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
+                ->where(['tagihan_detail.Tahun' => $Tahun_Id, 'tagihan_detail.Bulan' => $Bulan_Id-1,'tagihan_detail.Item_Pembayaran_Id' => 3,'Check_In_Id' => $d->Check_In_Id])
+                ->first();
+                $datas[$i]['Nama_Tagihan'] = $tg->Nama_Item. ' - '.$mstr_bulan->Nama_Bulan.' '.$mstr_thn->nama_tahun ;
+                $datas[$i]['Jumlah'] = $tg->Jumlah;
+                $jum_nom += $tg->Jumlah;
             }else{
                 $datas[$i]['Nama_Tagihan'] = $d->Nama_Item;
+                $datas[$i]['Jumlah'] = $d->Jumlah;
+                $jum_nom += $d->Jumlah;
             }
             
-            $datas[$i]['Jumlah'] = $d->Jumlah;
             // if($belum_bayar != null){
 
             //     foreach($belum_bayar as $bb){
@@ -305,7 +333,7 @@ class CetakTagihanPenyewa extends Controller
             // }else{
             //     $datas[$i]['Nama_Tagihan2'] = [];
             // }
-            $jum_nom += $d->Jumlah;
+           
 
 
 
