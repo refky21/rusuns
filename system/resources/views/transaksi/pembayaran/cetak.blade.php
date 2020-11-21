@@ -8,109 +8,7 @@
  window.print();
 //}
 </script>
-<?php
-  function tanggal_indo($tanggal, $cetak_hari = false)
-  {
-  	$hari = array ( 1 =>    'Senin',
-  				'Selasa',
-  				'Rabu',
-  				'Kamis',
-  				'Jumat',
-  				'Sabtu',
-  				'Minggu'
-  			);
 
-  	$bulan = array (1 =>   'Januari',
-  				'Februari',
-  				'Maret',
-  				'April',
-  				'Mei',
-  				'Juni',
-  				'Juli',
-  				'Agustus',
-  				'September',
-  				'Oktober',
-  				'November',
-  				'Desember'
-  			);
-  	$split 	  = explode('-', $tanggal);
-  	$tgl_indo = $split[2] . ' ' . $bulan[ (int)$split[1] ] . ' ' . $split[0];
-
-  	if ($cetak_hari) {
-  		$num = date('N', strtotime($tanggal));
-  		return $hari[$num] . ', ' . $tgl_indo;
-  	}
-  	return $tgl_indo;
-  }
-
-  function bulan($bln){
-    $bulan = $bln;
-    Switch ($bulan){
-     case 1 : $bulan="Januari";
-      break;
-     case 2 : $bulan="Februari";
-     break;
-     case 3 : $bulan="Maret";
-     break;
-     case 4 : $bulan="April";
-     break;
-     case 5 : $bulan="Mei";
-     break;
-     case 6 : $bulan="Juni";
-     break;
-     case 7 : $bulan="Juli";
-     break;
-     case 8 : $bulan="Agustus";
-     break;
-     case 9 : $bulan="September";
-     break;
-     case 10 : $bulan="Oktober";
-     break;
-     case 11 : $bulan="November";
-     break;
-     case 12 : $bulan="Desember";
-     break;
-     }
-    return $bulan;
-    }
-
-    function penyebut($nilai) {
-      $nilai = abs($nilai);
-      $huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
-      $temp = "";
-      if ($nilai < 12) {
-        $temp = " ". $huruf[$nilai];
-      } else if ($nilai <20) {
-        $temp = penyebut($nilai - 10). " belas";
-      } else if ($nilai < 100) {
-        $temp = penyebut($nilai/10)." puluh". penyebut($nilai % 10);
-      } else if ($nilai < 200) {
-        $temp = " seratus" . penyebut($nilai - 100);
-      } else if ($nilai < 1000) {
-        $temp = penyebut($nilai/100) . " ratus" . penyebut($nilai % 100);
-      } else if ($nilai < 2000) {
-        $temp = " seribu" . penyebut($nilai - 1000);
-      } else if ($nilai < 1000000) {
-        $temp = penyebut($nilai/1000) . " ribu" . penyebut($nilai % 1000);
-      } else if ($nilai < 1000000000) {
-        $temp = penyebut($nilai/1000000) . " juta" . penyebut($nilai % 1000000);
-      } else if ($nilai < 1000000000000) {
-        $temp = penyebut($nilai/1000000000) . " milyar" . penyebut(fmod($nilai,1000000000));
-      } else if ($nilai < 1000000000000000) {
-        $temp = penyebut($nilai/1000000000000) . " trilyun" . penyebut(fmod($nilai,1000000000000));
-      }     
-      return $temp;
-    }
-    
-    function terbilang($nilai) {
-      if($nilai<0) {
-        $hasil = "minus ". trim(penyebut($nilai));
-      } else {
-        $hasil = trim(penyebut($nilai));
-      }     		
-      return $hasil;
-    }
-  ?>
   <style>
   @page {  size: 8.27in 12.99in; margin: 60px 50px 30px 50px;}
     footer { position: fixed; left: 0px; bottom: -80px; right: 0px; height: 100px;font-size: 8pt;text-align: right;font-style: italic; color: lightblue; }
@@ -122,7 +20,7 @@
   <table style="width:100%; font-size:14pt; margin: -30px 50px 30px 50px;">
     <tr>
       <td width=" 2%"></td>
-      <td width=" 60%"><center><img src=img/logo_univ.png style="width:90px;" alt=""></td>
+      <td width=" 60%"><center><img src={{url('assets/images/logo-icon.png')}} style="width:90px;" alt=""></td>
       <td width=" 2%"></td>
     </tr>
     <tr>
@@ -167,9 +65,9 @@
         </tr>
         <tr>
           <td>Tanggal</td>
-          <td width="30%"> : <b>{{ tanggal_indo($birth,false)}}</b></td>
-          <td>Nominal Bayar</td>
-          <td> : <b>{{ tanggal_indo($birth,false)}}</b></td>
+          <td width="30%"> : <b>{{ tanggal_indonesia($birth,false)}}</b></td>
+          <!-- <td>Nominal Bayar</td>
+          <td> : <b>{{ tanggal_indonesia($birth,false)}}</b></td> -->
         </tr>
        
       </table>
@@ -227,7 +125,7 @@
       <tr>
         <td style="width:55%;"></td>
         <td style="width:45%;">
-          <label for="" style="font-size:13px;"> <?php echo tanggal_indo(date('Y-m-d')); ?> </label><br>
+          <label for="" style="font-size:13px;"> <?php echo tanggal_indonesia(date('Y-m-d')); ?> </label><br>
 
         </td>
       </tr>

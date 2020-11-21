@@ -231,44 +231,12 @@ class PembayaranController extends Controller
             // // ->groupby('tagihan.Tagihan_Id')
             // ->WhereNotIn('Tagihan_Id', $used_tagihan)->get();
             
-            $tgh = DB::table('tagihan_detail')
+            $tagihan = DB::table('tagihan_detail')
             ->join('tagihan','tagihan_detail.Tagihan_Id','=','tagihan.Tagihan_Id')
             ->where([['Check_In_Id', $Check_In_Id],['tagihan_detail.Tahun',$Tahun_Id],['tagihan_detail.Bulan',$Bulan_Id]])
             ->select(['tagihan_detail.Tagihan_Id','Keterangan'])
             ->groupby('Tagihan_Id','Keterangan')
             ->WhereNotIn('Item_Pembayaran_Id', $used_tagihan)->get();
-
-            $l = 0;
-            $tagihan = [];
-
-            foreach($tgh as $t){
-                $tagihan[$l] = new \stdClass();
-               
-                $cek_pembayaran = explode(" ",$t->Keterangan);
-
-                if($cek_pembayaran[1] == 'Air'){
-                    $tg =  DB::table('tagihan')
-                    ->join('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')
-                    ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
-                    ->where(['tagihan_detail.Tahun' => $Tahun_Id, 'tagihan_detail.Bulan' => $Bulan_Id-1,'tagihan_detail.Item_Pembayaran_Id' => 3,'Check_In_Id' => $Check_In_Id])
-                    ->first();
-                    $tagihan[$l]->Keterangan = $tg->Keterangan;
-                    $tagihan[$l]->Tagihan_Id = $tg->Tagihan_Id;
-                }elseif($cek_pembayaran[1] == 'Listrik'){
-                    $tg =  DB::table('tagihan')
-                    ->join('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')
-                    ->join('item_pembayaran','tagihan_detail.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
-                    ->where(['tagihan_detail.Tahun' => $Tahun_Id, 'tagihan_detail.Bulan' => $Bulan_Id-1,'tagihan_detail.Item_Pembayaran_Id' => 2,'Check_In_Id' => $Check_In_Id])
-                    ->first();
-                    $tagihan[$l]->Keterangan = $tg->Keterangan;
-                    $tagihan[$l]->Tagihan_Id = $tg->Tagihan_Id;
-                }else{
-                    $tagihan[$l]->Keterangan = $t->Keterangan;
-                    $tagihan[$l]->Tagihan_Id = $t->Tagihan_Id;
-                }
-
-                $l++;
-            }
         }
 
         // dd($tagihan);
@@ -279,7 +247,7 @@ class PembayaranController extends Controller
 
         $penyewa = DB::table('check_in')
         ->join('penyewa','check_in.Penyewa_Id','=','penyewa.Penyewa_Id')
-        ->where('Tgl_Check_Out',null)
+        ->where('Check_Out',null)
         ->where('Rusun_Id',$Rusun_Id)
         ->get();
 

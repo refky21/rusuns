@@ -81,7 +81,7 @@
 
     <tr>
       <td height="10px"><center><b>{{$no++}}</b></center></td>
-      <td>{{$d['Nama_Tagihan']}}</td>
+      <td>{{$d['Nama_Tagihan']}} - <i>{{$d['Bulan']}} {{$d['Tahun']}}</i></td>
       <td align="right">{{format_uang($d['Jumlah'])}}</td>
     </tr>
     <?php 
