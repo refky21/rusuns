@@ -24,15 +24,10 @@
             <div class="card-header text-white bg-dark">
             <div class="row">
                 <div class="col-md-6">
-                    Manajemen Permission
+                    Manajemen Default SYstem
                 </div>
                 <div class="col-md-6 text-right">
-                <?php
-                if($all_access->where('name','Permission-Add')->count() > 0){
-                    ?>
                 
-                <button type="button" data-toggle="modal" data-target="#addModal" class="btn btn-sm btn-square btn-outline-success waves-effect waves-light m-1">Tambah Data</button>
-                <?php } ?>
                 </div>
             </div>
             
@@ -129,6 +124,7 @@
                             <div class="modal-body">
                                 <form action=<?= route('Informasi.Update'); ?> method="post">
                                 <input type="hidden" name="Keys" value="{{$d->Keys}}">
+                                <input type="hidden" name="Rusun_Id" value="{{$Rusun_Id}}">
                                 @csrf
                                     <div class="input-group mb-3">
                                     <div class="input-group-prepend">
@@ -203,56 +199,6 @@
       </div>
 
 <!-- Modal -->
-<?php if($all_access->where('name','Permission-Add')->count() > 0){ ?>
-    <div class="modal fade" id="addModal">
-    <div class="modal-dialog">
-    <div class="modal-content border-secondary">
-        <div class="modal-header bg-secondary">
-        <h5 class="modal-title text-white">  Tambah Data</h5>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        </div>
-        <div class="modal-body">
-            <form action=<?= url('permission/create'); ?> method="post">
-            @csrf
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Display Name</span>
-                  </div>
-                  <input id="display_name" type="text" class="form-control @error('display_name') is-invalid @enderror" name="display_name" placeholder="User">
-                </div>
-                @error('display_name')
-                    <p style="color:red;font-size:9px;margin-left:100px;">{{ $message }}</p>
-                @enderror
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Access Name</span>
-                  </div>
-                  <input type="text" id="access_name" class="form-control  @error('access_name') is-invalid @enderror" name="access_name" placeholder="User-Create">
-                </div>
-                @error('access_name')
-                    <p style="color:red;font-size:9px;margin-left:100px;">{{ $message }}</p>
-                @enderror
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">Description</span>
-                  </div>
-                    <textarea class="form-control  @error('description') is-invalid @enderror" placeholder="Persimision Untuk Tambah User" name="description"></textarea>
-                </div>
-               
-        
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-inverse-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-        <button type="submit" class="btn btn-secondary"><i class="fa fa-check-square-o"></i> Save changes</button>
-        </div>
-        </form>
-    </div>
-    </div>
-</div>
-                
-<?php } ?>
 <!--End Modal -->
 
 

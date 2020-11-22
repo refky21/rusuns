@@ -56,9 +56,9 @@ class InformasiController extends Controller
     }
 
     if ($cari == null) {
-      $query = DB::table('mstr_option')->paginate($rowpage);
+      $query = DB::table('mstr_option')->where('Rusun_Id', $Rusun_Id)->paginate($rowpage);
     } else {
-      $query = DB::table('mstr_option')->where('Section', 'LIKE', '%' . $cari . '%')->orwhere('Keys', 'LIKE', '%' . $cari . '%')->paginate($rowpage);
+      $query = DB::table('mstr_option')->where('Section', 'LIKE', '%' . $cari . '%')->orwhere('Keys', 'LIKE', '%' . $cari . '%')->where('Rusun_Id', $Rusun_Id)->paginate($rowpage);
     }
 
         // dd($query);
@@ -92,9 +92,36 @@ class InformasiController extends Controller
         $data = [
             'Section' => $req->Section,
             'Data' => $req->Data,
+            'Rusun_Id' => $req->Rusun_Id,
         ];
 
         DB::table('mstr_option')->where('Keys', $req->Keys)->update($data);
+        Alert::success('Berhasil Mengubah Data Pengaturan','Berhasil');
+        return Redirect::back();
+     }
+     public function create(Request $req)
+     {
+        $userid = Auth::user()->id;
+        $access = DB::table('access_role_users')
+            ->join('access_role_group', 'access_role_users.group_id', '=', 'access_role_group.group_id')
+            ->join('access_role', 'access_role_group.group_id', '=', 'access_role.group_id')
+            ->join('access_name', 'access_role.access_id', '=', 'access_name.access_id')
+            ->where('access_role_users.users_id', $userid)
+            ->select('access_name.name')
+            ->get();
+
+        if (!$access->where('name', 'Informasi-Add')->count() > 0) {
+            return view('errors.403');
+        }
+
+        $data = [
+            'Section' => $req->Section,
+            'Data' => $req->Data,
+            'Keys' => $req->Keys,
+            'Rusun_Id' => $req->Rusun_Id,
+        ];
+
+        DB::table('mstr_option')->insert($data);
         Alert::success('Berhasil Mengubah Data Pengaturan','Berhasil');
         return Redirect::back();
      }

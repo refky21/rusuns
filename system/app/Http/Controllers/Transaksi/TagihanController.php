@@ -235,10 +235,22 @@ class TagihanController extends Controller
 
     public function getMeter(Request $req)
     {
-        
-        $cekin = DB::table('check_in')->where('Check_In_Id', $req->Check_In_Id)->first();
+        // dd($req->Tahun_Id);
+        // $cekin = DB::table('stand_meter')
+        // ->where('Unit_Sewa_Id', $req->Check_In_Id)
+        // ->where('Tahun', $req->Tahun_Id)
+        // ->where('Bulan', $req->Bulan_Id-1)
+        // ->where('Jns_Stand_Meter_Id', $req->Stand_Id)
+        // ->first();
 
-        return response()->Json($cekin);
+        $meter = DB::select(DB::RAW("
+        SELECT Meter_Akhir FROM stand_meter
+where unit_sewa_id=$req->Check_In_Id and jns_stand_meter_id=$req->Stand_Id
+and tahun*100+bulan < $req->Tahun_Id*100+$req->Bulan_Id
+order by tahun desc,bulan desc limit 1
+        "));
+
+        return response()->Json($meter[0]);
         
         
     }
@@ -247,26 +259,51 @@ class TagihanController extends Controller
     {
         
 
-        $Checkin_Id = $request->Check_In_Id;
+        $Unit_Id = $request->Check_In_Id;
+        if($Unit_Id != null){
+            $Checkin_Id = DB::table('check_in')->where('Unit_Sewa_Id', $Unit_Id)->first()->Check_In_Id;
+        }else{
+            $Checkin_Id = [];
+        }
         $Bulan_Id = $request->Bulan_Id;
         $Tahun_Id = $request->Tahun_Id;
         $Meter_Awal = $request->Meter_Awal;
         $Meter_Akhir = $request->Meter_Akhir;
 
         $meter_pakai = 0;
+    
 
-        if($Meter_Awal >= $Meter_Akhir){
-            // $meter_pakai = $Meter_Akhir - $Meter_Awal;
-            $total_meter_akhir = 10000 + $Meter_Akhir;
-            $meter_pakai = $total_meter_akhir - $Meter_Awal;
-           
+    if($Meter_Akhir >= $Meter_Awal){
+        $meter_pakai = $Meter_Akhir - $Meter_Awal;
+    }else{
+        if($Meter_Awal <= 10000){
+            $meter_pakai = 10000 - $Meter_Awal + $Meter_Akhir;
+        }else if($Meter_Awal <= 100000){
+            $meter_pakai = 100000 - $Meter_Awal + $Meter_Akhir;
+        }else if($Meter_Awal <= 1000000){
+            $meter_pakai = 1000000 - $Meter_Awal + $Meter_Akhir;
+        }else if($Meter_Awal <= 10000000){
+            $meter_pakai = 10000000 - $Meter_Awal + $Meter_Akhir;
         }else{
-            $meter_pakai = $Meter_Akhir - $Meter_Awal;
+            $meter_pakai = 100000000 - $Meter_Awal + $Meter_Akhir;
         }
+    }
+
 
         // Data Tagihan
 
-        // dd($meter_pakai);
+        // dd($request->all());
+
+        //insert dulu ke stand meter
+        DB::table('stand_meter')->insert([
+                'Jns_Stand_Meter_Id' => 2,
+                'Unit_Sewa_Id' => $Unit_Id,
+                'Tahun' => $Tahun_Id,
+                'Bulan' => $Bulan_Id,
+                'Meter_Awal' => $Meter_Awal,
+                'Meter_Akhir' => $Meter_Akhir,
+                'Meter_Pakai' => $meter_pakai,
+        ]);
 
         // Ambil Bulannya
 
@@ -275,6 +312,8 @@ class TagihanController extends Controller
 
         $tgl = DB::table('mstr_option')->where('Keys', 'DefTglByr')->first();
         $tempo = date('Y-m-d', strtotime($Tahun_Id.'-'.$Bulan_Id.'-'.$tgl->Data));
+
+
 
         $data = [
             'Check_In_Id' => $Checkin_Id,
@@ -285,6 +324,8 @@ class TagihanController extends Controller
             'Created_By' => Auth::user()->name,
             'Created_Date' => date('Y-m-d H:i:s')
         ];
+
+        // dd($data);
 
         $insert_tagihan =  DB::table('tagihan')->insert($data);
 
@@ -308,6 +349,7 @@ class TagihanController extends Controller
         return Redirect::back();
 
     }
+    
     public function stand_listrik_update(Request $request)
     {
         
@@ -390,8 +432,15 @@ class TagihanController extends Controller
         }
 
         $Bulan_Id = Input::get('Bulan_Id');
+        $Rusun_Id = Input::get('Rusun_Id');
 
         $Tahun_Id = Input::get('Tahun_Id');
+
+        if($Rusun_Id != null){
+            $session =  $request->session()->put('Rusun_Id', $Rusun_Id);
+        }elseif($Rusun_Id == null && $request->session()->get('Rusun_Id') !=null){
+            $Rusun_Id = $request->session()->get('Rusun_Id');
+        }
 
         if($Bulan_Id != null){
             $session =  $request->session()->put('Bulan_Id', $Bulan_Id);
@@ -422,6 +471,7 @@ class TagihanController extends Controller
         }
         // dd($used_tagihan);
 
+        
 
         $unit = DB::table('check_in')
         ->join('unit_sewa','check_in.Unit_Sewa_Id','=','unit_sewa.Unit_Sewa_Id')
@@ -455,14 +505,22 @@ class TagihanController extends Controller
 			$query = [];
 		}
        
-        $Rusun_Id = Input::get('Rusun_Id');
         $rusun = DB::table('mstr_rusun')->get();
         // dd($query);
+        $satuan_lis = DB::table('mstr_option')->where('Keys','DefMeterSatuanListrik')->where('Rusun_Id', $Rusun_Id)->first()->Data;
+        $beban_lis = DB::table('mstr_option')->where('Keys','DefBebanListrik')->where('Rusun_Id', $Rusun_Id)->first()->Data;
+        $ppj_lis = DB::table('mstr_option')->where('Keys','DefPajakListrik')->where('Rusun_Id', $Rusun_Id)->first()->Data;
+
+        // dd($satuan_lis);
+
 
         return view('transaksi.tagihan.hitung.listrik.index', compact('bulan','tahun','Bulan_Id','Tahun_Id','unit'))
         ->with('data',$query)
         ->with('Rusun_Id',$Rusun_Id)
         ->with('rusun',$rusun)
+        ->with('satuan_lis',$satuan_lis)
+        ->with('beban_lis',$beban_lis)
+        ->with('ppj_lis',$ppj_lis)
         ->with('all_access',$access);
     }
 
@@ -484,6 +542,13 @@ class TagihanController extends Controller
         ->join('tagihan_detail','tagihan.Tagihan_Id','=','tagihan_detail.Tagihan_Id')
         ->where([['tagihan.Bulan',$req->Bulan_Id],['tagihan.Tahun', $req->Tahun_Id],['Item_Pembayaran_Id',2]])
         ->get();
+
+
+        // dd($tagihan);
+
+        // MSTR OPtion Biaya
+
+        
 
         $data = [];
         $i=0;
@@ -523,6 +588,123 @@ class TagihanController extends Controller
         return redirect('/tagihan/hitung_listrik');
 
         // dd($data);
+    }
+
+    public function hitung_listrik_update(Request $req)
+    {
+        
+        $Bulan_Id = $req->Bulan_Id;
+        $Tahun_Id = $req->Tahun_Id;
+        $Biaya = $req->Biaya;
+        $Beban = $req->Beban;
+        $Pajak = $req->Pajak;
+        $Tagihan_Id = $req->Tagihan_Id;
+
+
+        // ambil dulu tagihan yang ada
+
+        $tag = DB::table('tagihan_detail')
+        ->where([['Tagihan_Id',$Tagihan_Id],['Item_Pembayaran_Id',2]])
+        ->first();
+
+
+        // dd($tagihan);
+        $data = [];
+        $i=0;
+
+            // Hitung pajak 
+            $totalhargas = $Biaya * $tag->Meter_Pakai + $Beban;
+            $jumlah = $totalhargas * $Pajak / 100;
+            // bulatan pajak
+            $pjk = ceil($jumlah);
+
+            $harga = $totalhargas + $pjk;
+            // Pembulatan harga
+            $totalharga=ceil($harga);
+            if (substr($totalharga,-3)>499){
+                $total_harga=round($totalharga,-3);
+            } else {
+                $total_harga=round($totalharga,-3)+1000;
+            } 
+
+            // aturan harganya += 479,187
+
+            
+
+            
+            $data =[
+                'Jumlah' => $total_harga,
+                'Harga_Satuan' => $Biaya,
+                'Biaya_Beban' => $Beban,
+                'PPJ' => $pjk
+            ];
+
+            // dd($data);
+
+            DB::table('tagihan_detail')->where('Tagihan_Id', $Tagihan_Id)->update($data);
+      
+
+        Alert::success('Membuat Iuran Tagihan Listrik','Berhasil');
+        return Redirect::back();
+
+    }
+    public function hitung_air_update(Request $req)
+    {
+        
+        $Bulan_Id = $req->Bulan_Id;
+        $Tahun_Id = $req->Tahun_Id;
+        $Biaya = $req->Biaya;
+        $Beban = $req->Beban;
+        $Pajak = $req->Pajak;
+        $Tagihan_Id = $req->Tagihan_Id;
+
+
+        // ambil dulu tagihan yang ada
+
+        $tag = DB::table('tagihan_detail')
+        ->where([['Tagihan_Id',$Tagihan_Id],['Item_Pembayaran_Id',3]])
+        ->first();
+
+
+        // dd($tagihan);
+        $data = [];
+        $i=0;
+
+            // Hitung pajak 
+            $totalhargas = $Biaya * $tag->Meter_Pakai + $Beban;
+            $jumlah = $totalhargas * $Pajak / 100;
+            // bulatan pajak
+            $pjk = ceil($jumlah);
+
+            $harga = $totalhargas + $pjk;
+            // Pembulatan harga
+            $totalharga=ceil($harga);
+            if (substr($totalharga,-3)>499){
+                $total_harga=round($totalharga,-3);
+            } else {
+                $total_harga=round($totalharga,-3)+1000;
+            } 
+
+            // aturan harganya += 479,187
+
+            
+
+            
+            $data =[
+                'Jumlah' => $total_harga,
+                'Harga_Satuan' => $Biaya,
+                'Biaya_Beban' => $Beban,
+                'PPJ' => $pjk
+            ];
+
+            // dd($data);
+
+            DB::table('tagihan_detail')->where('Tagihan_Id', $Tagihan_Id)->update($data);
+      
+
+        Alert::success('Membuat Iuran Tagihan Listrik','Berhasil');
+        return Redirect::back();
+
     }
 
 
@@ -643,7 +825,12 @@ class TagihanController extends Controller
     {
         
 
-        $Checkin_Id = $request->Check_In_Id;
+        $Unit_Id = $request->Check_In_Id;
+        if($Unit_Id != null){
+            $Checkin_Id = DB::table('check_in')->where('Unit_Sewa_Id', $Unit_Id)->first()->Check_In_Id;
+        }else{
+            $Checkin_Id = [];
+        }
         $Bulan_Id = $request->Bulan_Id;
         $Tahun_Id = $request->Tahun_Id;
         $Meter_Awal = $request->Meter_Awal;
@@ -651,16 +838,32 @@ class TagihanController extends Controller
 
         $meter_pakai = 0;
 
-        if($Meter_Awal >= $Meter_Akhir){
-            // $meter_pakai = $Meter_Akhir - $Meter_Awal;
-            $total_meter_akhir = 10000 + $Meter_Akhir;
-            $meter_pakai = $total_meter_akhir - $Meter_Awal;
-           
-        }else{
+        if($Meter_Akhir >= $Meter_Awal){
             $meter_pakai = $Meter_Akhir - $Meter_Awal;
+        }else{
+            if($Meter_Awal <= 10000){
+                $meter_pakai = 10000 - $Meter_Awal + $Meter_Akhir;
+            }else if($Meter_Awal <= 100000){
+                $meter_pakai = 100000 - $Meter_Awal + $Meter_Akhir;
+            }else if($Meter_Awal <= 1000000){
+                $meter_pakai = 1000000 - $Meter_Awal + $Meter_Akhir;
+            }else if($Meter_Awal <= 10000000){
+                $meter_pakai = 10000000 - $Meter_Awal + $Meter_Akhir;
+            }else{
+                $meter_pakai = 100000000 - $Meter_Awal + $Meter_Akhir;
+            }
         }
 
-        // Data Tagihan
+       //insert dulu ke stand meter
+       DB::table('stand_meter')->insert([
+        'Jns_Stand_Meter_Id' => 2,
+        'Unit_Sewa_Id' => $Unit_Id,
+        'Tahun' => $Tahun_Id,
+        'Bulan' => $Bulan_Id,
+        'Meter_Awal' => $Meter_Awal,
+        'Meter_Akhir' => $Meter_Akhir,
+        'Meter_Pakai' => $meter_pakai,
+]);
 
         // dd($meter_pakai);
 
@@ -852,12 +1055,27 @@ class TagihanController extends Controller
        
         $Rusun_Id = Input::get('Rusun_Id');
         $rusun = DB::table('mstr_rusun')->get();
+
+
+        if($Rusun_Id != null){
+            $session =  $request->session()->put('Rusun_Id', $Rusun_Id);
+        }elseif($Rusun_Id == null && $request->session()->get('Rusun_Id') !=null){
+            $Rusun_Id = $request->session()->get('Rusun_Id');
+        }
         // dd($query);
+
+         // dd($query);
+         $satuan_lis = DB::table('mstr_option')->where('Keys','DefMeterSatuanAir')->where('Rusun_Id', $Rusun_Id)->first()->Data;
+         $beban_lis = DB::table('mstr_option')->where('Keys','DefBebanAir')->where('Rusun_Id', $Rusun_Id)->first()->Data;
+         $ppj_lis = DB::table('mstr_option')->where('Keys','Def Pajak Air')->where('Rusun_Id', $Rusun_Id)->first()->Data;
 
         return view('transaksi.tagihan.hitung.air.index', compact('bulan','tahun','Bulan_Id','Tahun_Id','unit'))
         ->with('data',$query)
         ->with('Rusun_Id',$Rusun_Id)
         ->with('rusun',$rusun)
+        ->with('satuan_lis',$satuan_lis)
+        ->with('beban_lis',$beban_lis)
+        ->with('ppj_lis',$ppj_lis)
         ->with('all_access',$access);
     }
 

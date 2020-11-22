@@ -104,7 +104,7 @@
                     <tr>
                         <th>{{$no++}}</th>
                         <td>{{$d->Nama_Unit}}</td>
-                        <td>{{$d->Air_Awal}}</td>
+                        <td>{{$d->Meter_Awal}}</td>
                         <td>{{$d->Meter_Akhir}}</td>
                         <td>{{$d->Meter_Pakai}}</td>
                         <td> 
@@ -125,8 +125,8 @@
                                     <form action=<?= route('Stand_Air.Update'); ?> method="post">
                                     <input type="hidden" name="Check_In_Id" value="{{$d->Check_In_Id}}">
                                     <input type="hidden" name="Tagihan_Id" value="{{$d->Tagihan_Id}}">
-                                    <input type="hidden" name="Bulan_Id" value="{{$Bulan_Id}}">
-                                    <input type="hidden" name="Tahun_Id" value="{{$Tahun_Id}}">
+                                    <input type="hidden" name="Bulan_Id"  value="{{$Bulan_Id}}">
+                                    <input type="hidden" name="Tahun_Id"  value="{{$Tahun_Id}}">
                                     @csrf
                                     
                                     <div class="form-group row">
@@ -136,7 +136,7 @@
                                         </div>
                                         <label for="Meter_Awal{{$d->Check_In_Id}}" class="col-sm-2 col-form-label">Meter Awal</label>
                                         <div class="col-sm-4">
-                                        <input type="text" class="form-control @error('Meter_Awal') is-invalid @enderror" value="{{ $d->Air_Awal }}" id="Meter_Awal{{$d->Check_In_Id}}"  name="Meter_Awal" readonly>
+                                        <input type="text" class="form-control @error('Meter_Awal') is-invalid @enderror" value="{{ $d->Meter_Awal }}" id="Meter_Awal{{$d->Check_In_Id}}"  name="Meter_Awal" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -199,8 +199,8 @@
         </div>
         <div class="modal-body">
             <form action=<?= route('Stand_Air.Create'); ?> method="post">
-            <input type="hidden" name="Bulan_Id" value="{{$Bulan_Id}}">
-                                    <input type="hidden" name="Tahun_Id" value="{{$Tahun_Id}}">
+            <input type="hidden" name="Bulan_Id" id="Bulan_Id" value="{{$Bulan_Id}}">
+            <input type="hidden" name="Tahun_Id" id="Tahun_Id" value="{{$Tahun_Id}}">
             @csrf
             
             <div class="form-group row">
@@ -209,7 +209,7 @@
                 <select class="form-control single-select" name="Check_In_Id" id="Unit_Sewa_Id">
                         <option value="" >-- Pilih --</option>
                         @foreach($unit as $u)
-                        <option  value="{{$u->Check_In_Id}}" >{{$u->Nama_Unit}}</option>
+                        <option  value="{{$u->Unit_Sewa_Id}}" >{{$u->Nama_Unit}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -252,20 +252,25 @@
 $(document).ready(function(){
   $("#Unit_Sewa_Id").change(function(){
     var group = $('#Unit_Sewa_Id').val();
+    var Tahun_Id = $('#Tahun_Id').val();
+    var Bulan_Id = $('#Bulan_Id').val();
+    var Jenis_Stand_Meter = 2;
     var data = {
         "_token": "{{ csrf_token() }}",
-        "Check_In_Id" : group
+        "Check_In_Id" : group,
+        "Tahun_Id" : Tahun_Id,
     };
 
             $.ajax({
                 type: "GET",
                 url: "{{url('tagihan/getMeter')}}",
-                data: { Check_In_Id : group},
+                data: { Check_In_Id : group, Tahun_Id : Tahun_Id, Bulan_Id : Bulan_Id, Stand_Id : Jenis_Stand_Meter},
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (res) {
-                    
-                   $("#Meter_Awal").val(res.Air_Awal)
+ 
+                   $("#Meter_Awal").val(res.Meter_Akhir)
+                //    console.log(res.Meter_Awal)
                 }
             });
   });

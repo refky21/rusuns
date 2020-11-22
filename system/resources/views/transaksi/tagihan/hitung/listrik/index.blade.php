@@ -97,6 +97,7 @@
                       <th scope="col">Pajak</th>
                       <th scope="col">Total</th>
                       <th scope="col">Dibulatkan</th>
+                      <th class="text-center" scope="col"><i class="fa fa-cogs"></i></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -109,7 +110,7 @@
                         <th>{{$no++}}</th>
                         <td>{{$d->Nama_Unit}}</td>
                         <td>{{$d->Nama}}</td>
-                        <td>{{$d->Listrik_Awal}}</td>
+                        <td>{{$d->Meter_Awal}}</td>
                         <td>{{$d->Meter_Akhir}}</td>
                         <td>{{$d->Meter_Pakai}}</td>
                         <td>{{number_format($d->Harga_Satuan,0,',','.')}}</td>
@@ -123,8 +124,55 @@
                         {{number_format($jml,0,',','.')}}
                         </td>
                         <td>{{number_format($d->Jumlah,0,',','.')}}</td>
+                        <td> 
+                            <button type="button" class="btn btn-sm btn-outline-info waves-effect waves-light m-1" data-toggle="modal" data-target="#editModal{{$d->Check_In_Id}}">Hitung Ulang</button>
+                            <div class="modal fade" id="editModal{{$d->Check_In_Id}}">
+                            <div class="modal-dialog modal-lg">
+                            <div class="modal-content border-secondary">
+                                <div class="modal-header bg-secondary">
+                                <h5 class="modal-title text-white">  Hitung Ulang Tagihan</h5>
+                                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action=<?= route('HitListrik.Update'); ?> method="post">
+                                    <input type="hidden" name="Check_In_Id" value="{{$d->Check_In_Id}}">
+                                    <input type="hidden" name="Tagihan_Id" value="{{$d->Tagihan_Id}}">
+                                    <input type="hidden" name="Bulan_Id" value="{{$Bulan_Id}}">
+                                    <input type="hidden" name="Tahun_Id" value="{{$Tahun_Id}}">
+                                    @csrf
+                                    
+                                    <div class="form-group row">
+                                        <label for="Biaya" class="col-sm-2 col-form-label">Biaya Per Meter</label>
+                                        <div class="col-sm-2">
+                                        <input type="text" class="form-control"  id="Biaya"  name="Biaya" value="{{$d->Harga_Satuan}}">
+                                        </div>
+
+                                        <label for="Beban" class="col-sm-2 col-form-label">Biaya Beban</label>
+                                        <div class="col-sm-2">
+                                        <input type="text" class="form-control" id="Beban" name="Beban" value="{{$d->Biaya_Beban}}">
+                                        </div>
+
+                                        <label for="Pajak" class="col-sm-2 col-form-label">Pajak</label>
+                                        <div class="col-sm-2">
+                                        <input type="number" class="form-control" id="Pajak" name="Pajak" placeholder="%"> 
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-inverse-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                                <button type="submit" class="btn btn-secondary"><i class="fa fa-check-square-o"></i> Save changes</button>
+                                </div>
+                                </form>
+                            </div>
+                            </div>
+                        </div>
                         
-                            
+                            </td>
                     </tr>
 
                     <?php endforeach; } ?>
@@ -175,17 +223,17 @@
             <div class="form-group row">
                 <label for="Biaya" class="col-sm-2 col-form-label">Biaya Per Meter</label>
                 <div class="col-sm-2">
-                <input type="text" class="form-control"  id="Biaya"  name="Biaya" >
+                <input type="text" class="form-control"  id="Biaya"  name="Biaya" value={{$satuan_lis}}>
                 </div>
 
                 <label for="Beban" class="col-sm-2 col-form-label">Biaya Beban</label>
                 <div class="col-sm-2">
-                <input type="text" class="form-control" id="Beban" name="Beban">
+                <input type="text" class="form-control" id="Beban" name="Beban" value={{$beban_lis}}>
                 </div>
 
                 <label for="Pajak" class="col-sm-2 col-form-label">Pajak</label>
                 <div class="col-sm-2">
-                <input type="number" class="form-control" id="Pajak" name="Pajak" placeholder="%"> 
+                <input type="number" class="form-control" id="Pajak" name="Pajak"  value={{$ppj_lis}}> 
                 </div>
                 
             </div>

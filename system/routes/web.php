@@ -91,6 +91,7 @@ Route::group(['prefix' => '/info_website'], function()
 {
   Route::get('/', 'InformasiController@index')->name('Informasi');
   Route::post('/update', 'InformasiController@update')->name('Informasi.Update');
+  Route::post('/create', 'InformasiController@create')->name('Informasi.Create');
 });
  
 // ==============================================================================>
@@ -189,11 +190,13 @@ Route::group(['prefix' => '/tagihan'], function()
   Route::get('/getMeter', 'Transaksi\TagihanController@getMeter')->name('Tagihan');
   Route::get('/hitung_listrik', 'Transaksi\TagihanController@cek_listrik')->name('Tagihan');
   Route::post('/hitung_listrik_create', 'Transaksi\TagihanController@hit_listrik')->name('Tagihan');
+  Route::post('/hitung_listrik_update', 'Transaksi\TagihanController@hitung_listrik_update')->name('HitListrik.Update');
   // Tagihan Air
   Route::get('/stand_air', 'Transaksi\TagihanController@stand_air')->name('Tagihan');
   Route::post('/stand_air_create', 'Transaksi\TagihanController@stand_air_create')->name('Stand_Air.Create');
   Route::get('/hitung_air', 'Transaksi\TagihanController@cek_air')->name('Tagihan');
   Route::post('/hitung_air_create', 'Transaksi\TagihanController@hit_air')->name('Tagihan');
+  Route::post('/hitung_air_update', 'Transaksi\TagihanController@hitung_air_update')->name('HitAir.Update');
   Route::post('/stand_air_edit', 'Transaksi\TagihanController@stand_air_update')->name('Stand_Air.Update');
   // Sewa Bulanan
   Route::get('/sewa_bulan', 'Transaksi\TagihanController@sewa_bulan')->name('Tagihan');
