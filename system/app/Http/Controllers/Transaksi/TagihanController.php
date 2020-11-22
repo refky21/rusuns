@@ -167,7 +167,7 @@ class TagihanController extends Controller
        ->where([['Rusun_Id', $Rusun_Id]])
         ->wherenotin('check_in.Check_In_Id',$used_tagihan)
         ->select('check_in.Check_In_Id','unit_sewa.*')
-        ->groupby('check_in.Check_In_Id')
+        // ->groupby('check_in.Check_In_Id')
         ->get();
 
 
@@ -781,7 +781,7 @@ order by tahun desc,bulan desc limit 1
        ->where([['Rusun_Id', $Rusun_Id]])
         ->wherenotin('check_in.Check_In_Id',$used_tagihan)
         ->select('check_in.Check_In_Id','unit_sewa.*')
-        ->groupby('check_in.Check_In_Id')
+        // ->groupby('check_in.Check_In_Id')
         ->get();
 		
 
