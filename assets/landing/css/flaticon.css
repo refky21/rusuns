@@ -1,0 +1,387 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 25/08/2019 15:18
+  	*/
+	
+	@font-face {
+	    font-family: "Flaticon";
+	    src: url("../fonts/Flaticon.eot");
+	    src: url("../fonts/Flaticond41d.eot?#iefix") format("embedded-opentype"), url("../fonts/Flaticon.woff2") format("woff2"), url("../fonts/Flaticon.woff") format("woff"), url("../fonts/Flaticon.ttf") format("truetype"), url("../fonts/Flaticon.svg#Flaticon") format("svg");
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	
+	@media screen and (-webkit-min-device-pixel-ratio:0) {
+	    @font-face {
+	        font-family: "Flaticon";
+	        src: url("../fonts/Flaticon.svg#Flaticon") format("svg");
+	    }
+	}
+	
+	[class^="flaticon-"]:before,
+	[class*=" flaticon-"]:before,
+	[class^="flaticon-"]:after,
+	[class*=" flaticon-"]:after {
+	    font-family: Flaticon;
+	    font-style: normal;
+	}
+	
+	.flaticon-mail:before {
+	    content: "\f100";
+	}
+	
+	.flaticon-download:before {
+	    content: "\f101";
+	}
+	
+	.flaticon-user:before {
+	    content: "\f102";
+	}
+	
+	.flaticon-switch:before {
+	    content: "\f103";
+	}
+	
+	.flaticon-sledge:before {
+	    content: "\f104";
+	}
+	
+	.flaticon-speech-bubble:before {
+	    content: "\f105";
+	}
+	
+	.flaticon-mail-1:before {
+	    content: "\f106";
+	}
+	
+	.flaticon-volume:before {
+	    content: "\f107";
+	}
+	
+	.flaticon-computer:before {
+	    content: "\f108";
+	}
+	
+	.flaticon-power-button:before {
+	    content: "\f109";
+	}
+	
+	.flaticon-upload:before {
+	    content: "\f10a";
+	}
+	
+	.flaticon-switch-1:before {
+	    content: "\f10b";
+	}
+	
+	.flaticon-cloud-computing:before {
+	    content: "\f10c";
+	}
+	
+	.flaticon-upload-1:before {
+	    content: "\f10d";
+	}
+	
+	.flaticon-next:before {
+	    content: "\f10e";
+	}
+	
+	.flaticon-levels:before {
+	    content: "\f10f";
+	}
+	
+	.flaticon-sitemap:before {
+	    content: "\f110";
+	}
+	
+	.flaticon-computer-1:before {
+	    content: "\f111";
+	}
+	
+	.flaticon-pencil:before {
+	    content: "\f112";
+	}
+	
+	.flaticon-speech-bubble-1:before {
+	    content: "\f113";
+	}
+	
+	.flaticon-trash:before {
+	    content: "\f114";
+	}
+	
+	.flaticon-basketball:before {
+	    content: "\f115";
+	}
+	
+	.flaticon-bar-chart:before {
+	    content: "\f116";
+	}
+	
+	.flaticon-shuffle:before {
+	    content: "\f117";
+	}
+	
+	.flaticon-folder:before {
+	    content: "\f118";
+	}
+	
+	.flaticon-user-1:before {
+	    content: "\f119";
+	}
+	
+	.flaticon-upload-2:before {
+	    content: "\f11a";
+	}
+	
+	.flaticon-screen:before {
+	    content: "\f11b";
+	}
+	
+	.flaticon-mouse:before {
+	    content: "\f11c";
+	}
+	
+	.flaticon-apple:before {
+	    content: "\f11d";
+	}
+	
+	.flaticon-apple-1:before {
+	    content: "\f11e";
+	}
+	
+	.flaticon-android:before {
+	    content: "\f11f";
+	}
+	
+	.flaticon-android-logo:before {
+	    content: "\f120";
+	}
+	
+	.flaticon-share:before {
+	    content: "\f121";
+	}
+	
+	.flaticon-share-1:before {
+	    content: "\f122";
+	}
+	
+	.flaticon-export:before {
+	    content: "\f123";
+	}
+	
+	.flaticon-followers:before {
+	    content: "\f124";
+	}
+	
+	.flaticon-collaboration:before {
+	    content: "\f125";
+	}
+	
+	.flaticon-mobile:before {
+	    content: "\f126";
+	}
+	
+	.flaticon-hotel:before {
+	    content: "\f127";
+	}
+	
+	.flaticon-air-freight:before {
+	    content: "\f128";
+	}
+	
+	.flaticon-plane:before {
+	    content: "\f129";
+	}
+	
+	.flaticon-save-money:before {
+	    content: "\f12a";
+	}
+	
+	.flaticon-accounting:before {
+	    content: "\f12b";
+	}
+	
+	.flaticon-bell-ring:before {
+	    content: "\f12c";
+	}
+	
+	.flaticon-notification:before {
+	    content: "\f12d";
+	}
+	
+	.flaticon-greeting:before {
+	    content: "\f12e";
+	}
+	
+	.flaticon-contract:before {
+	    content: "\f12f";
+	}
+	
+	.flaticon-call:before {
+	    content: "\f130";
+	}
+	
+	.flaticon-placeholder:before {
+	    content: "\f131";
+	}
+	
+	.flaticon-pin:before {
+	    content: "\f132";
+	}
+	
+	.flaticon-paper-plane:before {
+	    content: "\f133";
+	}
+	
+	.flaticon-notebook:before {
+	    content: "\f134";
+	}
+	
+	.flaticon-notepad:before {
+	    content: "\f135";
+	}
+	
+	.flaticon-email:before {
+	    content: "\f136";
+	}
+	
+	.flaticon-open:before {
+	    content: "\f137";
+	}
+	
+	.flaticon-email-1:before {
+	    content: "\f138";
+	}
+	
+	.flaticon-star:before {
+	    content: "\f139";
+	}
+	
+	.flaticon-favourite:before {
+	    content: "\f13a";
+	}
+	
+	.flaticon-speedometer:before {
+	    content: "\f13b";
+	}
+	
+	.flaticon-speedometer-1:before {
+	    content: "\f13c";
+	}
+	
+	.flaticon-tools-and-utensils:before {
+	    content: "\f13d";
+	}
+	
+	.flaticon-padlock:before {
+	    content: "\f13e";
+	}
+	
+	.flaticon-padlock-1:before {
+	    content: "\f13f";
+	}
+	
+	.flaticon-padlock-2:before {
+	    content: "\f140";
+	}
+	
+	.flaticon-send:before {
+	    content: "\f141";
+	}
+	
+	.flaticon-fast-delivery:before {
+	    content: "\f142";
+	}
+	
+	.flaticon-privacy:before {
+	    content: "\f143";
+	}
+	
+	.flaticon-monitor:before {
+	    content: "\f144";
+	}
+	
+	.flaticon-monitor-1:before {
+	    content: "\f145";
+	}
+	
+	.flaticon-smartphone:before {
+	    content: "\f146";
+	}
+	
+	.flaticon-smartphone-1:before {
+	    content: "\f147";
+	}
+	
+	.flaticon-shopping-cart:before {
+	    content: "\f148";
+	}
+	
+	.flaticon-shopping-cart-1:before {
+	    content: "\f149";
+	}
+	
+	.flaticon-left-quote:before {
+	    content: "\f14a";
+	}
+	
+	.flaticon-quote-left:before {
+	    content: "\f14b";
+	}
+	
+	.flaticon-right-quotation-mark:before {
+	    content: "\f14c";
+	}
+	
+	.flaticon-cardiology:before {
+	    content: "\f14d";
+	}
+	
+	.flaticon-verify:before {
+	    content: "\f14e";
+	}
+	
+	.flaticon-sticky-notes:before {
+	    content: "\f14f";
+	}
+	
+	.flaticon-feedback:before {
+	    content: "\f150";
+	}
+	
+	.flaticon-pills:before {
+	    content: "\f151";
+	}
+	
+	.flaticon-prescription:before {
+	    content: "\f152";
+	}
+	
+	.flaticon-heart-beat:before {
+	    content: "\f153";
+	}
+	
+	.flaticon-graduated:before {
+	    content: "\f154";
+	}
+	
+	.flaticon-student:before {
+	    content: "\f155";
+	}
+	
+	.flaticon-graduate:before {
+	    content: "\f156";
+	}
+	
+	.flaticon-graduation-hat:before {
+	    content: "\f157";
+	}
+	
+	.flaticon-clean:before {
+	    content: "\f158";
+	}
+	
+	.flaticon-stars:before {
+	    content: "\f159";
+	}

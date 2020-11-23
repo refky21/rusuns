@@ -101,7 +101,7 @@ class CekOutController extends Controller
           }
           $query->appends(['search' => $cari, 'rowpage' => $rowpage]);
 
-        //   dd($query);
+          // dd($query);
 
           $datas = [];
           $i = 0;

@@ -76,7 +76,7 @@ class CashFlowController extends Controller
         $all_pembayaran = DB::table('cash_flow')
         ->join('item_pembayaran','cash_flow.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
         ->where('Rusun_Id', $Rusun_Id)
-        ->orderby('Tgl_Trans', 'asc')
+        ->orderby('Tgl_Trans', 'desc')
         ->get();
 
 
