@@ -217,7 +217,7 @@ Route::group(['prefix' => '/checkout'], function()
 Route::group(['prefix' => '/cashflow'], function()
 {
   Route::get('/', 'Transaksi\CashFlowController@index')->name('CashFlow');
-  Route::post('/create', 'Transaksi\CashFlowController@create')->name('CheckOut.Add');
+  Route::post('/create', 'Transaksi\CashFlowController@create')->name('CashFlow.Add');
   Route::post('/update', 'CekInController@update')->name('CheckIn.Update');
   Route::post('/edit_keluarga', 'CekInController@edit_keluarga')->name('CheckIn.Update');
   Route::get('/delete/{id}', 'CekInController@delete');

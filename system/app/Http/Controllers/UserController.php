@@ -116,11 +116,16 @@ class UserController extends Controller
             'role.required' => 'Group Role Wajib Diisi',
         ];
         $this->validate($req, $rules,$customMessages);
-
+        $Rusun_Id = Input::get('Rusun_Id');
+        if($Rusun_Id != null){
+            $session =  $request->session()->put('Rusun_Id', $Rusun_Id);
+        }elseif($Rusun_Id == null && $request->session()->get('Rusun_Id') !=null){
+            $Rusun_Id = $request->session()->get('Rusun_Id');
+        }
 
         $name = $req->name;
         $email = $req->email;
-        $rusun_id = $req->Rusun_Id;
+        // $rusun_id = $req->Rusun_Id;
         $password = Hash::make($req->password);
         $role_id = $req->role;
 		$create_user = DB::table('users')->insertGetId([
@@ -140,7 +145,7 @@ class UserController extends Controller
               if($rusun){
                 DB::table('role_rusun_user')->insert([
                     'User_Id' => $create_user,
-                    'Rusun_Id' => $rusun_id
+                    'Rusun_Id' => $Rusun_Id
                   ]);
               }
               Alert::success('Terimakasih Anda Berhasil Menambahkan Pengguna','Berhasil');
