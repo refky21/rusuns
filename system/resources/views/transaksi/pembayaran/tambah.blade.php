@@ -102,9 +102,22 @@
                                         $total = 0;
                                         $tots = 0;
                                 ?>
+
+                        <div class="form-group row">
+                            <label for="input-17" class="col-sm-2 col-form-label">Tanggal Bayar</label>
+                            <div class="col-sm-10">
+                            <?php
+                                if(date('Y-m-d') > $tgl_byr){
+                            ?>
+                                <input type="date" class="form-control" name="Tgl_Bayar" value="{{date('Y-m-d')}}" min="{{$tgl_byr}}">
+                                <?php }else{ ?>
+                                    <input type="date" class="form-control" name="Tgl_Bayar" value="{{date('Y-m-d')}}" max="{{$tgl_byr}}">
+                                <?php } ?>
+                            </div>
+                        </div>
                                 @foreach($detail_tagihan as $detail)
                                 <input type="hidden" name="Check_In_Id" value="{{$detail->Check_In_Id}}">
-                                <input type="hidden" name="Tgl_Bayar[]" value="{{date('Y-m-d')}}">
+                                <!-- <input type="hidden" name="Tgl_Bayar[]" value="{{date('Y-m-d')}}"> -->
                                 <input type="hidden" name="Keterangan[]" value="{{$detail->Nama_Item}}">
                                 <input type="hidden" name="Item_Pembayaran[]" value="{{$detail->Item_Pembayaran_Id}}">
                                 <input type="hidden" name="Tahun" value="{{$Tahun_Id}}">

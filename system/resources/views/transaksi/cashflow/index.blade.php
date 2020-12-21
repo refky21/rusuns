@@ -45,6 +45,43 @@
             
             </div>
             <div class="card-body">
+            <form action="" method="get">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect01">Sort</label>
+                            </div>
+                            <select class="custom-select" name="sort" onchange="this.form.submit()">
+                                <option value="10" <?php if ($rowpage  == "10") {
+                                                                        echo "selected";
+                                                                    } ?>>10</option>
+                                <option value="20" <?php if ($rowpage  == "20") {
+                                                                        echo "selected";
+                                                                    } ?>>20</option>
+                                <option value="50" <?php if ($rowpage  == "50") {
+                                                                        echo "selected";
+                                                                    } ?>>50</option>
+                                <option value="100 <?php if ($rowpage  == "100") {
+                                                                        echo "selected";
+                                                                    } ?>">100</option>
+                                <option value="99999" <?php if ($rowpage  == "99999") {
+                                                                        echo "selected";
+                                                                    } ?>>All</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group mb-3">
+                                                           
+                           
+                        </div>
+                    </div>
+                </div>
+            </form>
                 @if (count($errors) > 0)
                 @foreach ($errors->all() as $error)
                         <div class="alert alert-danger alert-dismissible" role="alert">
@@ -77,12 +114,14 @@
                             $saldo = 0;
                             $saldo2 = 0;
                             @endphp
+                           
                             @foreach($data as $d)
                             <tr>
                                     <td scope="col" >{{$no++}}</td>
                                     <td scope="col" >{{date('d F Y', strtotime($d->Tgl_Trans))}}</td>
                                     <td scope="col" >{{$d->Nama_Item}}</td>
                                     <td scope="col" class="text-right">{{number_format($d->Total_Amount,0,',','.')}}</td>
+                                   
                                     <td scope="col" class="text-right">{{number_format($d->Uang_Keluar,0,',','.')}}</td>
                                     
                                     <td scope="col" class="text-right">{{number_format($d->Saldo,0,',','.')}}</td>

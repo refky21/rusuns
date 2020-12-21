@@ -73,15 +73,46 @@ class CashFlowController extends Controller
         // ->get();
 
 
-        $all_pembayaran = DB::table('cash_flow')
-        ->join('item_pembayaran','cash_flow.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
-        ->where('Rusun_Id', $Rusun_Id)
-        ->orderby('Tgl_Trans', 'desc')
-        ->get();
+        // $all_pembayaran = DB::table('cash_flow')
+        // ->join('item_pembayaran','cash_flow.Item_Pembayaran_Id','=','item_pembayaran.Item_Pembayaran_Id')
+        // ->where('Rusun_Id', $Rusun_Id)
+        // ->orderby('Tgl_Trans', 'desc')
+        // ->get();
+
+        $rowpage = Input::get('sort');
+        if ($rowpage == null) {
+          $rowpage = 10;
+        }
+
+        $off = 0;
+        if($rowpage == 10 || $rowpage == null){
+            $off = 0;
+        }else{
+            $off = $rowpage;
+        }
+        
+        $all_pembayaran = DB::select("SELECT Null as cash_flow_id,pd.item_pembayaran_id as item_pembayaran_id,p.tgl_bayar as tgl_trans,sum(jumlah) as jml_masuk,NULL as jml_keluar,NULL as jml_subsidi,
+        concat( 'Penerimaan ',ip.nama_item) as keterangan,0 as jml_saldo,1 as jns  
+        FROM pembayaran_detail pd
+        inner join pembayaran p
+        on p.pembayaran_id=pd.pembayaran_id
+        inner join item_pembayaran ip
+        on ip.item_pembayaran_id=pd.item_pembayaran_id
+        group by pd.item_pembayaran_id,p.tgl_bayar,ip.nama_item  
+        UNION
+        SELECT cash_flow_id,item_pembayaran_id,tgl_trans,jml_masuk,jml_keluar,jml_subsidi,keterangan,0 as jml_saldo,2 as jns  
+        FROM cash_flow
+        order by tgl_trans, cash_flow_id, jns
+        
+        ");
+
+        $data2 = DB::table('cash_flow')->paginate($rowpage);
+        $data2->appends(['rowpage' => $rowpage]);
+
 
 
         // dd($all_pembayaran);
-
+        
 
         $datas = [];
         $i = 0;
@@ -90,33 +121,35 @@ class CashFlowController extends Controller
 
         foreach($all_pembayaran as $data){
             $datas[$i] =  new \stdCLass;
-            $datas[$i]->Item_Pembayaran_Id = $data->Item_Pembayaran_Id;
-            $datas[$i]->Total_Amount = $data->Jml_Masuk;
-            $datas[$i]->Nama_Item = $data->Keterangan;
-            $datas[$i]->Tgl_Trans = $data->Tgl_Trans;
+            $datas[$i]->Item_Pembayaran_Id = $data->item_pembayaran_id;
+            $datas[$i]->Total_Amount = $data->jml_masuk;
+            $datas[$i]->Nama_Item = $data->keterangan;
+            $datas[$i]->Tgl_Trans = $data->tgl_trans;
             
-            $datas[$i]->Uang_Keluar = $data->Jml_Keluar;
+            $datas[$i]->Uang_Keluar = $data->jml_keluar;
 
-            if($data->Jml_Keluar == null){
-                $saldo+= $data->Jml_Masuk;
-                $saldo2 = $saldo;
+            if($data->jml_keluar == null){
+                // $saldo = $data->jml_masuk + $data->jml_keluar;
+                $saldo = $saldo + $data->jml_masuk;
             }else{
 
-                $saldo = $data->Jml_Masuk - $data->Jml_Keluar;
-                $saldo2 = $saldo + $data->Jml_Masuk;
+                // $saldo = $data->jml_masuk + $data->jml_keluar;
+                $saldo = $saldo + $data->jml_masuk - $data->jml_keluar;
             }
 
             
-            $datas[$i]->Saldo = $saldo2;
+            $datas[$i]->Saldo = $saldo;
 
             $i++;
         }
 
-        // Item bayar
+        // Item bayar 
         $items = DB::table('item_pembayaran')->get();
         // dd($datas);
         return view('transaksi.cashflow.index', compact('Rusun_Id','rusun'))
         ->with('data',$datas)
+        ->with('rowpage', $rowpage)
+        ->with('dt',$data2)
         ->with('items',$items)
         ->with('all_access',$access);
 

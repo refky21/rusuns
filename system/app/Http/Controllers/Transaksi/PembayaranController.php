@@ -189,6 +189,11 @@ class PembayaranController extends Controller
         }
 
 
+        // Ambil default tanggal bayar
+        $opt_tgl = DB::table('mstr_option')->where([['Keys','DefTglByr'],['Rusun_Id',$Rusun_Id]])->first()->Data;
+        $tgl_byr = date('Y-m-'.$opt_tgl);
+
+
         $Check_In_Id = Input::get('Check_In_Id');
         $Tagihan_Id = Input::get('Tagihan_Id');
 
@@ -315,6 +320,7 @@ class PembayaranController extends Controller
                         'Check_In_Id',
                         'Tagihan_Id',
                         'tagihan',
+                        'tgl_byr',
                         'detail_tagihan',
                         'dends',
                         'rusun',
@@ -362,11 +368,13 @@ class PembayaranController extends Controller
         $data1 =[
             'Check_In_Id' => $req->Check_In_Id,
             'Tagihan_Id' => $req->Tagihan_Id,
-            'Tgl_Bayar' => $req->Tgl_Bayar[0],
+            'Tgl_Bayar' => $req->Tgl_Bayar,
             'Keterangan' => $req->Keterangan[0],
             'Created_By' => Auth::user()->name,
             'Created_Date' => date('Y-m-d H:i:s'),
         ];
+
+        // dd($data1);
 
         $bayar = DB::table('pembayaran')->insertGetId($data1);
 
