@@ -27,6 +27,6 @@ return array(
     'a806c12c6e24e7e4e900847766218dba' => $vendorDir . '/uxweb/sweet-alert/src/SweetAlert/functions.php',
     'f9ee7b05fedf5c154501ccffb0018d35' => $baseDir . '/app/Helpers/TanggalIndonesia.php',
     'b261a6066eb9bcd73a89a507964b50c2' => $baseDir . '/app/Helpers/Tanggal.php',
-    '4a6f746c7b675223c3ef8178da88eb7c' => $baseDir . '/app/Helpers/Formatuang.php',
+    '008d4ec4e4cd79c40916405065e152b6' => $baseDir . '/app/Helpers/FormatUang.php',
     '0f0aa3e01aa4e3a01d284ebf833062c1' => $baseDir . '/app/Helpers/AngkaTerbilang.php',
 );

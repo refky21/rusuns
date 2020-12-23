@@ -43,7 +43,7 @@ class DaftarPenyewaController extends Controller
 
 
 
-        // Data
+        // Data penyewa
         if($Rusun_Id != null){
             $datas = DB::table('check_in')->where('Check_Out', null)
             ->join('penyewa','check_in.Penyewa_Id','=','penyewa.Penyewa_Id')
