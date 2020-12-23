@@ -49,6 +49,8 @@ Route::group(['prefix' => '/resume_penyewa'], function()
 Route::group(['prefix' => '/daftar_penyewa'], function()
 {
   Route::get('/', 'DaftarPenyewaController@index')->name('DaftarPenyewa');
+  Route::get('/excel', 'DaftarPenyewaController@excel')->name('DaftarPenyewa');
+  Route::get('/pdf', 'DaftarPenyewaController@pdf')->name('DaftarPenyewa');
 });
 
 //  Cetak Tagihan
