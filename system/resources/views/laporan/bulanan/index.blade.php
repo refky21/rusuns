@@ -27,7 +27,10 @@
                     Laporan Bulanan
                 </div>
                 <div class="col-md-6 text-right">
-                <!--  -->
+                <?php if($Bulan_Id != null && $Tahun_Id){?>  
+                <a href="{{url('laporan_bulanan/excel?Bulan_Id='.$Bulan_Id.'&Tahun_Id='.$Tahun_Id.'&Rusun_Id='.$Rusun_Id)}}" class="btn btn-sm btn-square btn-outline-success waves-effect waves-light m-1"><i class="fa fa-file-excel-o"></i> Excel</a>
+                <a href="{{url('laporan_bulanan/pdf?Bulan_Id='.$Bulan_Id.'&Tahun_Id='.$Tahun_Id.'&Rusun_Id='.$Rusun_Id)}}" class="btn btn-sm btn-square btn-outline-info waves-effect waves-light m-1"><i class="fa fa-file-pdf-o"></i> PDF</a>
+                <?php } ?>
                 </div>
             </div>
             

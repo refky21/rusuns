@@ -27,7 +27,10 @@
                     Laporan Harian
                 </div>
                 <div class="col-md-6 text-right">
-                <!--  -->
+                <?php if($tanggal != null){?>  
+                <a href="{{url('laporan_harian/excel/'.$tanggal)}}" class="btn btn-sm btn-square btn-outline-success waves-effect waves-light m-1"><i class="fa fa-file-excel-o"></i> Excel</a>
+                <a href="{{url('laporan_harian/pdf/'.$tanggal)}}" class="btn btn-sm btn-square btn-outline-info waves-effect waves-light m-1"><i class="fa fa-file-pdf-o"></i> PDF</a>
+                <?php } ?>
                 </div>
             </div>
             

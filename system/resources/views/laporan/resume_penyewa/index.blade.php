@@ -27,7 +27,10 @@
                     Resume Penyewa
                 </div>
                 <div class="col-md-6 text-right">
-                <!--  -->
+                <?php if($Rusun_Id != null){ ?>
+                <a href="{{url('resume_penyewa/excel?Rusun_Id='.$Rusun_Id)}}" class="btn btn-sm btn-square btn-outline-success waves-effect waves-light m-1"><i class="fa fa-file-excel-o"></i> Excel</a>
+                <a href="{{url('resume_penyewa/pdf?Rusun_Id='.$Rusun_Id)}}" class="btn btn-sm btn-square btn-outline-info waves-effect waves-light m-1"><i class="fa fa-file-pdf-o"></i> PDF</a>
+                <?php } ?>
                 </div>
             </div>
             

@@ -23,20 +23,28 @@ Route::get('/home', 'HomeController@index')->name('Home');
 Route::group(['prefix' => '/laporan_harian'], function()
 {
   Route::get('/', 'LaporanHarianController@index')->name('LaporanHarian');
+  Route::get('/excel/{id}', 'LaporanHarianController@excel')->name('LaporanHarian');
+  Route::get('/pdf/{id}', 'LaporanHarianController@pdf')->name('LaporanHarian');
 });
 
 Route::group(['prefix' => '/laporan_bulanan'], function()
 {
   Route::get('/', 'LaporanBulananController@index')->name('LaporanBulanan');
+  Route::get('/excel', 'LaporanBulananController@excel')->name('LaporanBulanan');
+  Route::get('/pdf', 'LaporanBulananController@pdf')->name('LaporanBulanan');
 });
 
 Route::group(['prefix' => '/laporan_tahunan'], function()
 {
   Route::get('/', 'LaporanTahunanController@index')->name('LaporanTahunan');
+  Route::get('/excel', 'LaporanTahunanController@excel')->name('LaporanTahunan');
+  Route::get('/pdf', 'LaporanTahunanController@pdf')->name('LaporanTahunan');
 });
 Route::group(['prefix' => '/resume_penyewa'], function()
 {
   Route::get('/', 'ResumePenyewaController@index')->name('ResumePenyewa');
+  Route::get('/excel', 'ResumePenyewaController@excel')->name('ResumePenyewa');
+  Route::get('/pdf', 'ResumePenyewaController@pdf')->name('ResumePenyewa');
 });
 Route::group(['prefix' => '/daftar_penyewa'], function()
 {
