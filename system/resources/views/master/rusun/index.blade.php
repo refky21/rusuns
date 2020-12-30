@@ -274,17 +274,17 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control form-control-square" id="kasubag_tu" name="kasubag_tu" >
                     </div>
-                    <label for="nip_kasubag_tu" class="col-sm-2 col-form-label">NIP Kasubag TU</label>
+                    <label for="nip_kasubag_tu" class="col-sm-2 col-form-label">NIP</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control form-control-square" id="nip_kasubag_tu" name="nip_kasubag_tu" >
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="kepala_dpu" class="col-sm-2 col-form-label">Kepala DPU</label>
+                    <label for="kepala_dpu" class="col-sm-2 col-form-label">Kadis Perkim</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control form-control-square" id="kepala_dpu" name="kepala_dpu" >
                     </div>
-                    <label for="nip_kepala_dpu" class="col-sm-2 col-form-label">NIP Kepala DPU</label>
+                    <label for="nip_kepala_dpu" class="col-sm-2 col-form-label">NIP</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control form-control-square" id="nip_kepala_dpu" name="nip_kepala_dpu">
                     </div>
@@ -294,7 +294,7 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control form-control-square" id="kepala_upt" name="kepala_upt" >
                     </div>
-                    <label for="nip_kepala_upt" class="col-sm-2 col-form-label">NIP Kepala DPU</label>
+                    <label for="nip_kepala_upt" class="col-sm-2 col-form-label">NIP</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control form-control-square" id="nip_kepala_upt" name="nip_kepala_upt" >
                     </div>

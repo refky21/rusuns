@@ -106,13 +106,9 @@
                         <div class="form-group row">
                             <label for="input-17" class="col-sm-2 col-form-label">Tanggal Bayar</label>
                             <div class="col-sm-10">
-                            <?php
-                                if(date('Y-m-d') > $tgl_byr){
-                            ?>
-                                <input type="date" class="form-control" name="Tgl_Bayar" value="{{date('Y-m-d')}}" min="{{$tgl_byr}}">
-                                <?php }else{ ?>
-                                    <input type="date" class="form-control" name="Tgl_Bayar" value="{{date('Y-m-d')}}" max="{{$tgl_byr}}">
-                                <?php } ?>
+                            
+                                <input type="date" class="form-control" name="Tgl_Bayar" value="{{date('Y-m-d')}}" >
+                                
                             </div>
                         </div>
                                 @foreach($detail_tagihan as $detail)
